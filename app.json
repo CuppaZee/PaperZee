@@ -25,6 +25,10 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "package": "uk.cuppazee.paper",
+      "versionCode": 1
     }
   }
 }

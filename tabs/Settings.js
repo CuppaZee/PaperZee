@@ -6,8 +6,8 @@ export default function SettingsScreen({ navigation }) {
     <View style={{ flex: 1, backgroundColor: '#e6fcd9', justifyContent: 'center', alignItems: 'center' }}>
       <Text>Settings screen</Text>
       <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('Details')}
+        title="Add User"
+        onPress={() => navigation.navigate('Auth')}
       />
     </View>
   );

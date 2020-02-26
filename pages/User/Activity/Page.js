@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, Image, ScrollView, FlatList } from 'react-native';
+import { Text, View, Image, ScrollView, FlatList, TouchableHighlight } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { List } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -43,50 +43,56 @@ var hostIcon = (icon) => {
 export default function UserActivityScreen() {
   var navigation = useNavigation();
   return (
-    <ScrollView contentContainerStyle={{alignContent: "stretch", alignItems: "flex-start", backgroundColor: '#e6fcd9', flexDirection: "column"}} style={{ flex: 1 }}>
-      <View style={{ flexDirection: "column", width: "100%", alignItems: "center" }}>
-        <View><Text style={{fontSize:24,fontWeight:"bold"}}>{[...data.data.captures,...data.data.deploys,...data.data.captures_on].reduce((a,b)=>a+Number(b.points_for_creator??b.points),0)} Points</Text></View>
-      </View>
-      <View style={{ flexDirection: "column", width: "100%", alignItems: "center", paddingLeft:8,paddingRight:8,backgroundColor:'transparent'??'#aaffaa',borderRadius:0 }}>
-        <View><Text style={{color:'black'??'#004400',fontSize:20,fontWeight:"bold"}}>{data.data.captures.length} Capture{data.data.captures.length!==1?'s':''} - {data.data.captures.reduce((a,b)=>a+Number(b.points),0)} Points</Text></View>
-        <View style={{ display: "flex", flexWrap: "wrap", flexDirection: "row", justifyContent: "center" }}>
-          {
-            count(data.data.captures,"pin").map(cap=><View key={cap[0]} style={{padding:2, alignItems: "center"}}>
-              <Image style={{ height: 32, width: 32 }} source={{ uri:cap[0] }}/>
-              <Text style={{color:'black'??'#004400'}}>{cap[1]}</Text>
-            </View>)
-          }
-        </View>
-      </View>
-      <View style={{ flexDirection: "column", width: "100%", alignItems: "center" }}>
-        <View style={{paddingLeft:8,paddingRight:8,backgroundColor:'transparent'??'#a5fffc',borderRadius:0}}><Text style={{color:'black'??'#00403e',fontSize:20,fontWeight:"bold"}}>{data.data.deploys.length} Deploy{data.data.deploys.length!==1?'s':''} - {data.data.deploys.reduce((a,b)=>a+Number(b.points),0)} Points</Text></View>
-        <View style={{ display: "flex", flexWrap: "wrap", flexDirection: "row", justifyContent: "center" }}>
-          {
-            count(data.data.deploys,"pin").map(dep=><View key={dep[0]} style={{padding:2, alignItems: "center"}}>
-              <Image style={{ height: 32, width: 32 }} source={{ uri:dep[0] }}/>
-              <Text style={{color:'black'??'#00403e'}}>{dep[1]}</Text>
-            </View>)
-          }
-        </View>
-      </View>
-      <View style={{ flexDirection: "column", width: "100%", alignItems: "center" }}>
-        <View style={{paddingLeft:8,paddingRight:8,backgroundColor:'transparent'??'#ffbcad',borderRadius:8}}><Text style={{color:'black'??`#401700`,fontSize:20,fontWeight:"bold"}}>{data.data.captures_on.length} Capon{data.data.captures_on.length!==1?'s':''} - {data.data.captures_on.reduce((a,b)=>a+Number(b.points_for_creator),0)} Points</Text></View>
-        <View style={{ display: "flex", flexWrap: "wrap", flexDirection: "row", justifyContent: "center" }}>
-          {
-            count(data.data.captures_on,"pin").map(cap=><View key={cap[0]} style={{padding:2, alignItems: "center"}}>
-              <Image style={{ height: 32, width: 32 }} source={{ uri:cap[0] }}/>
-              <Text style={{color:'black'??`#401700`}}>{cap[1]}</Text>
-            </View>)
-          }
-        </View>
-      </View>
+    // <ScrollView style={{ flex: 1 }}>
+      
       <FlatList
-        style={{width:"100%"}}
-        data={[...data.data.captures,...data.data.deploys,...data.data.captures_on].sort((a,b)=>new Date(b.captured_at??b.deployed_at)-new Date(a.captured_at??a.deployed_at))}
-        renderItem={({ item: act }) => <View style={{ flexDirection: "row", paddingTop: 8, alignItems: "center" }}>
+        contentContainerStyle={{ alignItems: "stretch", flexDirection: "column"}}
+        style={{width:"100%",backgroundColor: '#e6fcd9'}}
+        data={[
+          <View key="total" style={{ flexDirection: "column", width: "100%", alignItems: "center" }}>
+            <View><Text style={{fontSize:24,fontWeight:"bold"}}>{[...data.data.captures,...data.data.deploys,...data.data.captures_on].reduce((a,b)=>a+Number(b.points_for_creator??b.points),0)} Points</Text></View>
+          </View>,
+          <View key="captures" style={{ flexDirection: "column", width: "100%", alignItems: "center", paddingLeft:8,paddingRight:8,backgroundColor:'transparent'??'#aaffaa',borderRadius:0 }}>
+            <View><Text style={{color:'black'??'#004400',fontSize:20,fontWeight:"bold"}}>{data.data.captures.length} Capture{data.data.captures.length!==1?'s':''} - {data.data.captures.reduce((a,b)=>a+Number(b.points),0)} Points</Text></View>
+            <View style={{ flexWrap: "wrap", flexDirection: "row", justifyContent: "center" }}>
+              {
+                count(data.data.captures,"pin").map(cap=><View key={cap[0]} style={{padding:2, alignItems: "center"}}>
+                  <Image style={{ height: 32, width: 32 }} source={{ uri:cap[0] }}/>
+                  <Text style={{color:'black'??'#004400'}}>{cap[1]}</Text>
+                </View>)
+              }
+            </View>
+          </View>,
+          <View key="deploys" style={{ flexDirection: "column", width: "100%", alignItems: "center" }}>
+            <View style={{paddingLeft:8,paddingRight:8,backgroundColor:'transparent'??'#a5fffc',borderRadius:0}}><Text style={{color:'black'??'#00403e',fontSize:20,fontWeight:"bold"}}>{data.data.deploys.length} Deploy{data.data.deploys.length!==1?'s':''} - {data.data.deploys.reduce((a,b)=>a+Number(b.points),0)} Points</Text></View>
+            <View style={{ flexWrap: "wrap", flexDirection: "row", justifyContent: "center" }}>
+              {
+                count(data.data.deploys,"pin").map(dep=><View key={dep[0]} style={{padding:2, alignItems: "center"}}>
+                  <Image style={{ height: 32, width: 32 }} source={{ uri:dep[0] }}/>
+                  <Text style={{color:'black'??'#00403e'}}>{dep[1]}</Text>
+                </View>)
+              }
+            </View>
+          </View>,
+          <View key="capons" style={{ flexDirection: "column", width: "100%", alignItems: "center" }}>
+            <View style={{paddingLeft:8,paddingRight:8,backgroundColor:'transparent'??'#ffbcad',borderRadius:8}}><Text style={{color:'black'??`#401700`,fontSize:20,fontWeight:"bold"}}>{data.data.captures_on.length} Capon{data.data.captures_on.length!==1?'s':''} - {data.data.captures_on.reduce((a,b)=>a+Number(b.points_for_creator),0)} Points</Text></View>
+            <View style={{ flexWrap: "wrap", flexDirection: "row", justifyContent: "center" }}>
+              {
+                count(data.data.captures_on,"pin").map(cap=><View key={cap[0]} style={{padding:2, alignItems: "center"}}>
+                  <Image style={{ height: 32, width: 32 }} source={{ uri:cap[0] }}/>
+                  <Text style={{color:'black'??`#401700`}}>{cap[1]}</Text>
+                </View>)
+              }
+            </View>
+          </View>,
+          ...data.data.captures,
+          ...data.data.deploys,
+          ...data.data.captures_on
+        ].sort((a,b)=>new Date(b.captured_at??b.deployed_at)-new Date(a.captured_at??a.deployed_at))}
+        renderItem={({ item: act }) => !act.pin?act:<View key={act.id??act.capture_id??act.captured_at??act.deployed_at} style={{ flexDirection: "row", width: '100%', paddingTop: 8, alignItems: "center" }}>
           <View style={{padding:4,paddingLeft:8,position:"relative",alignContent:'center',alignItems: "center", flexGrow:0}}>
-            <View style={{width:60,justifyContent:'center',flexDirection:"row",flexGrow:0}}>
-              <View style={{display:"inline-block",paddingLeft:8,paddingRight:8,backgroundColor:act.points_for_creator?`#ffbcad`:(act.captured_at?'#aaffaa':'#a5fffc'),borderRadius:9.5}}>
+            <View style={{width:60,justifyContent:'center',flexDirection:"row",flexWrap:"wrap",flexGrow:0}}>
+              <View style={{paddingLeft:8,paddingRight:8,backgroundColor:act.points_for_creator?`#ffbcad`:(act.captured_at?'#aaffaa':'#a5fffc'),borderRadius:9.5}}>
                 <Text style={{color:act.points_for_creator?`#401700`:(act.captured_at?'#004400':'#00403e'),fontWeight:"bold"}}>{(act.points_for_creator??act.points)>0&&'+'}{(Number(act.points_for_creator??act.points))||"None"}</Text>
               </View>
             </View>
@@ -95,11 +101,13 @@ export default function UserActivityScreen() {
               {hostIcon(act.pin)&&<Image style={{ height: 24, width: 24, position: "absolute", right: -5, bottom: -5 }} source={{ uri: hostIcon(act.pin) }}/>}
             </View>
           </View>
-          <View onClick={()=>{navigation.navigate('Munzee',{url:`/m/${!act.points_for_creator&&act.captured_at?act.username:'sohcah'}/${act.code}`})}} style={{paddingLeft:8, paddingRight:8, flexGrow:1, flexShrink:1}}>
-            <Text style={{}}>{act.points_for_creator?`${act.username} captured`:(act.captured_at?'You captured':'You deployed')}</Text>
-            <Text style={{fontWeight:"bold"}}>{act.friendly_name}</Text>
-            <Text style={{opacity:0.8}}>{act.points_for_creator?`by you`:(act.captured_at?`by ${act.username}`:'by you')}</Text>
-          </View>
+          <TouchableHighlight style={{paddingLeft:8, paddingRight:8, flexGrow:1, flexShrink:1}} onPress={()=>{navigation.navigate('MunzeeDetails',{url:`/m/${!act.points_for_creator&&act.captured_at?act.username:'sohcah'}/${act.code}`})}} underlayColor="white">
+            <View>
+              <Text style={{}}>{act.points_for_creator?`${act.username} captured`:(act.captured_at?'You captured':'You deployed')}</Text>
+              <Text style={{fontWeight:"bold"}}>{act.friendly_name}</Text>
+              <Text style={{opacity:0.8}}>{act.points_for_creator?`by you`:(act.captured_at?`by ${act.username}`:'by you')}</Text>
+            </View>
+          </TouchableHighlight>
           <View style={{padding:8, flexGrow:0, paddingLeft:16,alignContent:'center', position:"relative", alignItems: "flex-end"}}>
             <Text style={{fontWeight:"bold"}}>{new Date(act.captured_at??act.deployed_at).getHours().toString().padStart(2,"0")}:{new Date(act.captured_at??act.deployed_at).getMinutes().toString().padStart(2,"0")}</Text>
             {/* <Image style={{ height: 32, width: 32 }} source={{ uri: act.pin }}/>
@@ -108,22 +116,22 @@ export default function UserActivityScreen() {
         </View>}
         keyExtractor={item => item.capture_id??item.id}
       />
-      {/* {[...data.data.captures,...data.data.deploys,...data.data.captures_on].sort((a,b)=>new Date(b.captured_at??b.deployed_at)-new Date(a.captured_at??a.deployed_at)).map(act=>
-      <View style={{ flexDirection: "row" }}>
-        <View style={{padding:8,paddingLeft:16,position:"relative", alignItems: "center"}}>
-          <Text>{(act.points_for_creator??act.points)>0&&'+'}{(act.points_for_creator??act.points)||"None"}</Text>
-          <Image style={{ height: 32, width: 32 }} source={{ uri: act.pin }}/>
-          {hostIcon(act.pin)&&<Image style={{ height: 24, width: 24, position: "absolute", right: 5, bottom: 5 }} source={{ uri: hostIcon(act.pin) }}/>}
-        </View>
-        <View style={{padding:8}}>
-          <Text style={{fontWeight:"bold"}}>{act.friendly_name}</Text>
-        </View>
-      </View>)} */}
-      {/* <List.Item
-        title="First Item"
-        description="Item description"
-        left={props => <List.Icon {...props} icon="folder" />}
-      /> */}
-    </ScrollView>
+    //   {/* {[...data.data.captures,...data.data.deploys,...data.data.captures_on].sort((a,b)=>new Date(b.captured_at??b.deployed_at)-new Date(a.captured_at??a.deployed_at)).map(act=>
+    //   <View style={{ flexDirection: "row" }}>
+    //     <View style={{padding:8,paddingLeft:16,position:"relative", alignItems: "center"}}>
+    //       <Text>{(act.points_for_creator??act.points)>0&&'+'}{(act.points_for_creator??act.points)||"None"}</Text>
+    //       <Image style={{ height: 32, width: 32 }} source={{ uri: act.pin }}/>
+    //       {hostIcon(act.pin)&&<Image style={{ height: 24, width: 24, position: "absolute", right: 5, bottom: 5 }} source={{ uri: hostIcon(act.pin) }}/>}
+    //     </View>
+    //     <View style={{padding:8}}>
+    //       <Text style={{fontWeight:"bold"}}>{act.friendly_name}</Text>
+    //     </View>
+    //   </View>)} */}
+    //   {/* <List.Item
+    //     title="First Item"
+    //     description="Item description"
+    //     left={props => <List.Icon {...props} icon="folder" />}
+    //   /> */}
+    // // </ScrollView>
   );
 }

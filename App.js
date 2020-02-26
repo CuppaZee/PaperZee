@@ -1,19 +1,22 @@
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useLinking, useNavigation } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AsyncStorage } from 'expo'
 import { WebView } from 'react-native-webview';
+import { Linking } from 'expo';
 
-import HomeScreen from './tabs/Home';
+import DashScreen from './tabs/Dash';
 import SettingsScreen from './tabs/Settings';
 import ToolsScreen from './tabs/Tools';
 import MapScreen from './tabs/Map';
 
 import UserActivityScreen from './pages/User/Activity/Page';
-import { Platform, Text, View } from 'react-native';
+import MunzeeDetailsScreen from './pages/Munzee/Details/Page';
+
+import { Platform, AsyncStorage } from 'react-native';
 import { SafeAreaProvider, SafeAreaConsumer } from 'react-native-safe-area-context';
+import { IconButton } from 'react-native-paper'
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -26,8 +29,8 @@ function Tabs() {
     shifting={true}
     >
     <Tab.Screen
-      name="Home"
-      component={HomeScreen}
+      name="Dash"
+      component={DashScreen}
       options={{
         tabBarLabel: 'Home',
         tabBarIcon: ({ color }) => (
@@ -69,70 +72,170 @@ function Tabs() {
 }
 
 export default function App() {
-  var [currentPage,setCurrentPage] = React.useState('hi')
-  var webref = null;
-  // var style = `
-  //   body {
-  //     background-color: #c6e3b6;
-  //     text-align: center;
-  //   }
-  //   input, button {
-  //     border: 1px solid black;
-  //     padding: 8px;
-  //     font: unset;
-  //     border-radius: 8px;
-  //     background-color: white;
-  //     font-size: 1rem!important;
-  //   }
-  //   img {
-  //     width:300px;
-  //   }
-  //   form p:nth-child(1) {
-  //     font-size: 1.4rem;
-  //   }
-  //   form p:nth-child(2) {
-  //     font-size: 1.4rem;
-  //   }
-  // `
-  // const runFirst = `
-  //   document.children[0].innerHTML+=\`Hi<style>${style}</style>\`;
-  //   true; // note: this is required, or you'll sometimes get silent failures
-  // `;
-  if(Platform.OS!='web') {
+  const ref = React.useRef();
+
+  const { getInitialState } = useLinking(ref, {
+    prefixes: ['https://paper.cuppazee.uk', 'cuppazee://'],
+    config: {
+      Home: 'Home',
+      UserActivity: {
+        path: 'User/:userid/Activity',
+        parse: {
+          userid: Number
+        }
+      },
+      MunzeeDetails: 'Munzee/:url',
+      AuthSuccess: 'authsuccess/:code/:id/:name'
+    },
+  });
+  var [login,setLogin] = React.useState(null);
+  var [newAuthentication,setNewAuthentication] = React.useState(false);
+  var [isReady, setIsReady] = React.useState(false);
+  var [initialState, setInitialState] = React.useState();
+  var [savingData, setSavingData] = React.useState(false);
+
+  React.useEffect(() => {
+    Promise.race([
+      getInitialState(),
+      new Promise(resolve =>
+        setTimeout(resolve, 150)
+      )
+    ])
+      .catch(e => {
+        console.error(e);
+      })
+      .then(state => {
+        console.log('initial',state)
+        if (state !== undefined) {
+          setInitialState(state);
+        }
+
+        setIsReady(true);
+      });
+  }, [getInitialState]);
+  
+
+  async function getLogin() {
+    const value = await AsyncStorage.getItem('LOGIN')
+    console.log(value)
+    if(value!==null) {
+      setLogin(JSON.parse(value))
+    } else {
+      setLogin(false)
+    }
+  }
+
+  React.useEffect(function() {
+    getLogin();
+  },[true])
+
+  async function saveLogin(value) {
+    console.log('SAVELOGIN',value);
+    await AsyncStorage.setItem('LOGIN',JSON.stringify(value));
+    setLogin(value);
+    setNewAuthentication(false);
+    return true;
+  }
+
+  function handleNavChange({url}) {
+    if(url.includes('authsuccess')) {
+      var x = {};
+      var auth = url.match(/authsuccess\/([a-z0-9]+)\/([0-9]+)\/([^]+)/).slice(1,4);
+      x[auth[1]] = {
+        username: auth[2],
+        code: auth[0]
+      }
+      saveLogin({...(login??{}),...x})
+    }
+  }
+
+  if(!savingData&&isReady&&initialState&&initialState.routes[initialState.routes.length-1].name=="AuthSuccess") {
+    console.log(initialState);
+    var params = initialState.routes[initialState.routes.length-1].params;
+    var x = {};
+    x[params.id] = {
+      username: params.name,
+      code: params.code
+    }
+    setSavingData(true)
+    saveLogin({...(login??{}),...x}).then(()=>{
+      console.log('AUTH',{...(login??{}),...x});
+      setInitialState({
+        routes: [
+          { name: 'Home' }
+        ],
+      })
+      setTimeout(()=>setSavingData(false),1000)
+    })
+  }
+  if (!isReady) {
+    return null;
+  }
+  if (savingData) {
+    return null;
+  }
+      //http://localhost:19006/authsuccess/f508b53be6aad36a6efc66e220d976fe18b4ffb0/125914/sohcah
+      // return null;
+
+  if(Platform.OS!='web'&&(login===false||newAuthentication)) {
     return <SafeAreaProvider>
       <SafeAreaConsumer>{insets=><WebView
-          ref={r => (webref = r)}
           source={{ uri: 'https://flame.cuppazee.uk/auth' }}
           textZoom={200}
           style={{marginTop:insets.top}}
-          // injectedJavaScript={runFirst}
+          onNavigationStateChange={handleNavChange}
       />}</SafeAreaConsumer>
     </SafeAreaProvider>
-        
-    // <View>
-    // <Text>Hi</Text>
-    //   <Text>Hi</Text>
-    //   <Text>Hi</Text>
-    //   <Text>Hi</Text>
-    //   <Text>Hi</Text>
-      
-    // </View>
+  }
+  if(Platform.OS=='web'&&!savingData&&(login===false||newAuthentication)) {
+    Linking.openURL('https://flame.cuppazee.uk/auth')
+  }
+  function handleStateChange(state) {
+    if(state.routes[state.routes.length-1].name=="Auth") {
+      setNewAuthentication(true);
+    }
   }
   return (
-    <NavigationContainer>
+    <NavigationContainer onStateChange={handleStateChange} initialState={initialState} ref={ref}>
       <Stack.Navigator
-        screenOptions={()=>({
+        screenOptions={({navigation,route})=>({
+          gestureEnabled: Platform.OS=='ios',
           headerStyle: {
             backgroundColor: '#016930'
           },
+          headerLeft: () => (
+            route.name=="Home"?null:<IconButton
+              onPress={()=>{navigation.canGoBack()?navigation.goBack():navigation.replace('Home')}}
+              color="#fff"
+              icon={navigation.canGoBack()?'arrow-left':'home'}
+            />
+          ),
+          headerRight: () => (
+            (route.name=="Home"||!navigation.canGoBack())?null:<IconButton
+              onPress={()=>navigation.replace('Home')}
+              color="#fff"
+              icon="home"
+            />
+          ),
           headerTintColor: '#fff',
         })}>
         <Stack.Screen
           name="Home"
           options={{
-            title: 'Home',
+            title: JSON.stringify(login),
           }}
           component={Tabs}
+          />
+        <Stack.Screen
+          name="Auth"
+          options={{
+            title: "Authenticate",
+          }}
+          component={()=>{
+            var navigation = useNavigation();
+            setTimeout(()=>navigation.replace('Home'),100)
+            return null
+          }}
           />
         <Stack.Screen
           name="UserActivity"
@@ -142,11 +245,22 @@ export default function App() {
           component={UserActivityScreen}
           />
         <Stack.Screen
-          name="Munzee"
+          name="MunzeeDetails"
           options={{
-            title: 'Munzee',
+            title: 'Munzee Details',
           }}
-          component={UserActivityScreen}
+          component={MunzeeDetailsScreen}
+          />
+        <Stack.Screen
+          name="AuthSuccess"
+          options={{
+            title: 'Authentication Successful',
+          }}
+          component={()=>{
+            // var navigation = useNavigation();
+            // navigation.replace('Home')
+            return null
+          }}
           />
       </Stack.Navigator>
     </NavigationContainer>
