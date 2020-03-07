@@ -1,48 +1,96 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import axios from 'axios';
-import user_search from './Actions/user_search';
+import r from './request';
+import { AsyncStorage } from 'react-native';
+var {makeRequest} = r;
 const defaultState = {
-  requirements: {}
+  requests: [],
+  request_data: {},
+  loading: 0,
+  loadingLogin: true,
+  loggedIn: false,
+  logins: true,
 };
 
-var setRequirements = (data) => ({ type: "SET_REQUIREMENTS", requirements: data })
-var getRequirements = (month = "February 2020") => async (dispatch) => {
-  var data = await axios.get('http://us-central1-cuppazeex.cloudfunctions.net/getRequ');
-  dispatch(setRequirements(data.data[month]));
+
+function refreshRequests(store,force) {
+  for(var request of store.getState().requests.filter(i=>i.count>0&&(force||i.expires<Date.now()))) {
+    makeRequest(store.getState,store.dispatch,request.page,true);
+  }
 }
 
-var setClanDetails = (data) => ({ type: "SET_CLAN_DATA", clan_id: data.details.data.details.clan_id, clan_data: data })
-var getClanDetails = (clan_id) => async (dispatch) => {
-  var data = await axios.get(`https://flame.cuppazee.uk/clan/details?clan_id=${encodeURIComponent(clan_id)}`);
-  dispatch(setClanDetails(data.data));
+var refresh = () => async (dispatch, getState) => {
+  refreshRequests({dispatch,getState},true);
+}
+
+var login_ = (data) => ({ type: "LOGIN", data: data })
+var login = (data,noUpdate) => async (dispatch, getState) => {
+  if(!noUpdate) await AsyncStorage.setItem('LOGINS',JSON.stringify({...getState().logins,...data}));
+  dispatch(login_(data));
 }
 
 var rootReducer = (state = defaultState, action) => {
   switch (action.type) {
-    case 'SET_REQUIREMENTS':
-      return {
-        ...state,
-        requirements: action.requirements
-      }
-    case 'SET_CLAN_DATA':
-      var clan_data = {};
-      clan_data[action.clan_id] = action.clan_data;
-      return {
-        ...state,
-        clans: {
-          ...state.clans,
-          ...clan_data
+    case 'ADD_REQUEST':
+      if(state.requests.find(i=>i.page==action.page)) {
+        return {
+          ...state,
+          requests: state.requests.map(i=>i.page==action.page?{...i,count:i.count+1}:i)
+        }
+      } else {
+        return {
+          ...state,
+          requests: [...state.requests, {page:action.page,count:1,expires:Date.now()+(15*60000)}]
         }
       }
-    case 'SET_USER_SEARCH':
-      return user_search.reducer(state, action);
+    case 'REMOVE_REQUEST':
+      if(state.requests.find(i=>i.page==action.page).count>0) {
+        return {
+          ...state,
+          requests: state.requests.map(i=>i.page==action.page?{...i,count:i.count-1}:i)
+        }
+      } else {
+        return {
+          ...state,
+          requests: state.requests.filter(i=>i.page!=action.page)
+        }
+      }
+    case 'LOADING':
+      return {
+        ...state,
+        loading: state.loading+action.change
+      }
+    case 'LOGIN':
+      return {
+        ...state,
+        loggedIn: Object.keys(action.data).length>0,
+        logins: {...state.logins,...action.data},
+        loadingLogin: false,
+      }
+    case 'SET_REQUEST_DATA':
+      var data = {};
+      data[action.page] = action.data;
+      return {
+        ...state,
+        requests: state.requests.map(i=>i.page==action.originalpage?{...i,expires:Date.now()+(20*60000)}:i),
+        request_data: {
+          ...state.clans,
+          ...data
+        }
+      }
     default:
       return state;
   }
 }
 // import rootReducer from './reducers/index';
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
 
-export default store;
+const store = createStore(rootReducer, applyMiddleware(thunk));
+setInterval(refreshRequests,60000,store);
+
+AsyncStorage.getItem('LOGINS').then((data)=>{
+  if(!data) return store.dispatch(login({},true));
+  store.dispatch(login(JSON.parse(data),true));
+})
+
+export default {store,refresh,login};
