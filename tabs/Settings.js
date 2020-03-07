@@ -17,11 +17,11 @@ export default function SettingsScreen({ navigation }) {
   );
   return (
     <View style={{ flex: 1, backgroundColor: '#e6fcd9', justifyContent: 'center', alignItems: 'center' }}>
-      <Text>{data.loading}</Text>
+      {/* <Text>{data.loading}</Text>
       <Text>{JSON.stringify(data.requests)}</Text>
       <Text>{JSON.stringify(data.logins)}</Text>
       <Text>{JSON.stringify(data.loadingLogin)}</Text>
-      <Text>{JSON.stringify(Object.keys(data))}</Text>
+      <Text>{JSON.stringify(Object.keys(data))}</Text> */}
       <Button
         title="Add User"
         onPress={() => navigation.navigate('Auth')}
