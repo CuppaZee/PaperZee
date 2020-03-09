@@ -1,1 +1,38 @@
-{}
+{
+    "common": {
+        "dashboard": "Dashboard",
+        "search": "Search",
+        "map": "Map",
+        "tools": "Tools",
+        "settings": "Settings"
+    },
+    "activity": {
+        "user_captured": "{user} captured",
+        "user_deployed": "{user} deployed",
+        "you_captured": "You captured",
+        "you_deployed": "You deployed",
+        "by_user": "by {user}",
+        "by_you": "by you",
+        "total_point": {
+            "one": "{count} Total Point",
+            "other": "{count} Total Points"
+        },
+        "capture": {
+            "one": "{count} Capture",
+            "other": "{count} Captures"
+        },
+        "deploy": {
+            "one": "{count} Deploy",
+            "other": "{count} Deploys"
+        },
+        "capon": {
+            "one": "{count} Capon",
+            "other": "{count} Capons"
+        },
+        "point": {
+            "one": "{count} Point",
+            "other": "{count} Points"
+        },
+        "none": "None"
+    }
+}
