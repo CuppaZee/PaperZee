@@ -1,1 +1,43 @@
-{}
+{
+    "common": {
+        "dashboard": "",
+        "search": "",
+        "map": "",
+        "tools": "",
+        "settings": ""
+    },
+    "activity": {
+        "user_captured": "",
+        "user_deployed": "",
+        "you_captured": "",
+        "you_deployed": "",
+        "by_user": "",
+        "by_you": "",
+        "total_point": {
+            "one": "",
+            "few": "",
+            "other": ""
+        },
+        "capture": {
+            "one": "",
+            "few": "",
+            "other": ""
+        },
+        "deploy": {
+            "one": "",
+            "few": "",
+            "other": ""
+        },
+        "capon": {
+            "one": "",
+            "few": "",
+            "other": ""
+        },
+        "point": {
+            "one": "",
+            "few": "",
+            "other": ""
+        },
+        "none": ""
+    }
+}
