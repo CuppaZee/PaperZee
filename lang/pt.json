@@ -1,38 +1,40 @@
 {
     "common": {
-        "dashboard": "",
-        "search": "",
-        "map": "",
-        "tools": "",
-        "settings": ""
+        "dashboard": "Painel de Controle",
+        "search": "Procurar",
+        "map": "Mapa",
+        "tools": "Ferramentas",
+        "settings": "Configurações",
+        "authenticate": "",
+        "auth_success": ""
     },
     "activity": {
-        "user_captured": "",
-        "user_deployed": "",
-        "you_captured": "",
-        "you_deployed": "",
-        "by_user": "",
-        "by_you": "",
+        "user_captured": "{user} Capturado",
+        "user_deployed": "{user} Implantado",
+        "you_captured": "Voce capturou",
+        "you_deployed": "Voce implantou",
+        "by_user": "por {user}",
+        "by_you": "por voce",
         "total_point": {
-            "one": "",
-            "other": ""
+            "one": "{count} Ponto Total",
+            "other": "{count} Pontos Totais"
         },
         "capture": {
-            "one": "",
-            "other": ""
+            "one": "{count} Captura",
+            "other": "{count} Capturas"
         },
         "deploy": {
-            "one": "",
-            "other": ""
+            "one": "{count} Implantação",
+            "other": "{count} Implantações"
         },
         "capon": {
-            "one": "",
-            "other": ""
+            "one": "{count} Capon\n",
+            "other": "{count} Capons"
         },
         "point": {
-            "one": "",
-            "other": ""
+            "one": "{count} Ponto",
+            "other": "{count} Pontos"
         },
-        "none": ""
+        "none": "Nenhum"
     }
 }
