@@ -4,7 +4,9 @@
         "search": "Search",
         "map": "Map",
         "tools": "Tools",
-        "settings": "Settings"
+        "settings": "Settings",
+        "authenticate": "Authenticate",
+        "auth_success": "Authentication Successful"
     },
     "activity": {
         "user_captured": "{user} captured",
