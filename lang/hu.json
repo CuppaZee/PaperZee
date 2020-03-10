@@ -1,38 +1,40 @@
 {
     "common": {
-        "dashboard": "",
-        "search": "",
-        "map": "",
-        "tools": "",
-        "settings": ""
+        "dashboard": "Műszerfal",
+        "search": "Keresés",
+        "map": "Térkép",
+        "tools": "Eszközök",
+        "settings": "Beállítások",
+        "authenticate": "Hitelesítés",
+        "auth_success": "Sikeres hitelesítés"
     },
     "activity": {
-        "user_captured": "",
-        "user_deployed": "",
-        "you_captured": "",
-        "you_deployed": "",
-        "by_user": "",
-        "by_you": "",
+        "user_captured": "{user} megtalálta",
+        "user_deployed": "{user} telepítette",
+        "you_captured": "Megtaláltad",
+        "you_deployed": "Telepítetted",
+        "by_user": ":",
+        "by_you": "Saját",
         "total_point": {
-            "one": "",
-            "other": ""
+            "one": "{count} Össz pont\n",
+            "other": "{count} Össz pont"
         },
         "capture": {
-            "one": "",
-            "other": ""
+            "one": "{count} Megtalálás",
+            "other": "{count} Megtalálás"
         },
         "deploy": {
-            "one": "",
-            "other": ""
+            "one": "{count} Telepítés",
+            "other": "{count} Telepítés"
         },
         "capon": {
-            "one": "",
-            "other": ""
+            "one": "{count} Capon",
+            "other": "{count} Capon"
         },
         "point": {
-            "one": "",
-            "other": ""
+            "one": "{count} Pont",
+            "other": "{count} Pont"
         },
-        "none": ""
+        "none": "Nincs"
     }
 }
