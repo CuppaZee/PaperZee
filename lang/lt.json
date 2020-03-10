@@ -1,18 +1,20 @@
 {
     "common": {
-        "dashboard": "",
-        "search": "",
-        "map": "",
-        "tools": "",
-        "settings": ""
+        "dashboard": "Valdymas",
+        "search": "Paieška",
+        "map": "Žemėlapis",
+        "tools": "Įrankiai",
+        "settings": "Nustatymai",
+        "authenticate": "",
+        "auth_success": ""
     },
     "activity": {
-        "user_captured": "",
-        "user_deployed": "",
-        "you_captured": "",
-        "you_deployed": "",
-        "by_user": "",
-        "by_you": "",
+        "user_captured": "{user} sugavo",
+        "user_deployed": "{user} deployino",
+        "you_captured": "Jūs sugavote",
+        "you_deployed": "Jūs deployinote",
+        "by_user": "{user}",
+        "by_you": "jūsų",
         "total_point": {
             "one": "",
             "few": "",
