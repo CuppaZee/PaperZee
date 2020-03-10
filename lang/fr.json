@@ -1,38 +1,40 @@
 {
     "common": {
-        "dashboard": "",
-        "search": "",
-        "map": "",
-        "tools": "",
-        "settings": ""
+        "dashboard": "Tableau de bord",
+        "search": "Rechercher",
+        "map": "Carte",
+        "tools": "Outils",
+        "settings": "Paramètres",
+        "authenticate": "s'authentifier",
+        "auth_success": ""
     },
     "activity": {
-        "user_captured": "",
-        "user_deployed": "",
-        "you_captured": "",
-        "you_deployed": "",
-        "by_user": "",
-        "by_you": "",
+        "user_captured": "Captures {user}",
+        "user_deployed": "Déploiements {user}",
+        "you_captured": "Vous avez capturé",
+        "you_deployed": "Vous avez déployé",
+        "by_user": "par {user}",
+        "by_you": "par vous",
         "total_point": {
-            "one": "",
-            "other": ""
+            "one": "{count} Point total",
+            "other": "{count} Points totaux"
         },
         "capture": {
-            "one": "",
-            "other": ""
+            "one": "{count} Capture",
+            "other": "{count} Captures"
         },
         "deploy": {
-            "one": "",
-            "other": ""
+            "one": "{count} Déploiement",
+            "other": "{count} Déploiements"
         },
         "capon": {
-            "one": "",
-            "other": ""
+            "one": "{count} Capon",
+            "other": "{count} Capons"
         },
         "point": {
-            "one": "",
-            "other": ""
+            "one": "{count} Point",
+            "other": "{count} Points"
         },
-        "none": ""
+        "none": "Aucun"
     }
 }
