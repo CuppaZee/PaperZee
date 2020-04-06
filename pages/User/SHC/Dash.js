@@ -5,7 +5,6 @@ import { List, ActivityIndicator } from 'react-native-paper';
 import request from '../../../redux/request'
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import Card from '../../../components/Card';
 
 var countup = (t) => (a, b) => {
   a[b[t]] = (a[b[t]] || 0) + 1;
@@ -40,8 +39,7 @@ var hostIcon = (icon) => {
   return `https://munzee.global.ssl.fastly.net/images/pins/${creatures[host] ?? host}.png`;
 }
 
-export default function UserActivityDash({user_id}) {
-  var nav = useNavigation();
+export default function UserActivityDash({ user_id }) {
   var date = new Date(Date.now() - (5 * 60 * 60000));
   var dateString = `${date.getUTCFullYear()}-${(date.getUTCMonth() + 1).toString().padStart(2, '0')}-${(date.getUTCDate()).toString().padStart(2, '0')}`
   var dispatch = useDispatch();
@@ -57,35 +55,18 @@ export default function UserActivityDash({user_id}) {
       };
     }, [user_id])
   );
-  if (!data?.data?.captures) {
-    if(!data) {
-      return (
-        <Card>
-          <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-            <ActivityIndicator size="large" color="#000" />
-          </View>
-        </Card>
-        // <View style={{ flexDirection: "column", flex: 1, width: "100%", alignContent: "center", backgroundColor: '#e6fcd9' }}>
-        // </View>
-      )
-    } else {
-      return (
-        <Card cardStyle={{backgroundColor:'#ffaaaa'}}>
-          <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-            <Text>An Error Occurred</Text>
-          </View>
-        </Card>
-      );
-    }
-  }
+  if (!data) return (
+    <View style={{ flex: 1, alignContent: "center", backgroundColor: '#e6fcd9' }}>
+      <ActivityIndicator size="large" color="#000" />
+    </View>
+  )
   return (
-    // <View style={{ flex: 1, alignItems: "stretch", flexDirection: "column", backgroundColor: "#e9ffdc"??"#e6fcd9", borderRadius: 8 }}>
-    <Card noPad onPress={()=>nav.navigate('UserActivity',{userid:user_id})}>
-      <View style={{backgroundColor:"#016930",padding:8, borderTopLeftRadius: 8, borderTopRightRadius: 8}}>
-        <Text style={{color:"white",fontWeight:"bold",fontSize:20}}>{userdata?.data?.username??user_id}'s User Activity</Text>
+    <View style={{ flex: 1, alignItems: "stretch", flexDirection: "column", backgroundColor: "#e6fcd9", borderRadius: 8 }}>
+      <View style={{ backgroundColor: "#016930", padding: 8, borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>
+        <Text style={{ color: "white", fontWeight: "bold", fontSize: 20 }}>{userdata?.data?.username ?? user_id}'s User Activity</Text>
       </View>
       <View key="total" style={{ flexDirection: "column", width: "100%", alignItems: "center" }}>
-        <View><Text style={{ fontSize: 24, fontWeight: "bold" }}>{[...data?.data?.captures??[], ...data?.data?.deploys??[], ...data?.data?.captures_on??[]].reduce((a, b) => a + Number(b.points_for_creator ?? b.points), 0)} Points</Text></View>
+        <View><Text style={{ fontSize: 24, fontWeight: "bold" }}>{[...data.data.captures, ...data.data.deploys, ...data.data.captures_on].reduce((a, b) => a + Number(b.points_for_creator ?? b.points), 0)} Points</Text></View>
       </View>
       <View key="captures" style={{ flexDirection: "column", width: "100%", alignItems: "center", paddingLeft: 8, paddingRight: 8, backgroundColor: 'transparent' ?? '#aaffaa', borderRadius: 0 }}>
         <View><Text style={{ color: 'black' ?? '#004400', fontSize: 20, fontWeight: "bold" }}>{data.data.captures.length} Capture{data.data.captures.length !== 1 ? 's' : ''} - {data.data.captures.reduce((a, b) => a + Number(b.points), 0)} Points</Text></View>
@@ -120,7 +101,6 @@ export default function UserActivityDash({user_id}) {
           }
         </View>
       </View>
-    </Card>
-    // </View>
+    </View>
   );
 }

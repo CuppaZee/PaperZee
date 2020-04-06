@@ -16,7 +16,14 @@ export default function MapScreen({ navigation }) {
   },[MapView])
   if(MapView) {
     return (
-      <MapView markers={[{lat:52,lng:-1,icon:'https://munzee.global.ssl.fastly.net/images/pins/treehouse.png'}]} style={{ flex: 1 }} />
+      <>
+        <MapView markers={[{lat:52,lng:-1,icon:'https://munzee.global.ssl.fastly.net/images/pins/treehouse.png'}]} style={{ flex: 1 }} />
+        <View style={{position:"absolute",top:0,left:0,bottom:0,right:0,alignItems:"center",justifyContent:"center"}}>
+          <View style={{borderRadius:8,backgroundColor:'#ff3322',padding:8}}>
+            <Text style={{fontWeight:"bold",fontSize:20,color:"white"}}>Coming Soon</Text>
+          </View>
+        </View>
+      </>
     );
   } else {
     return (

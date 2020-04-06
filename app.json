@@ -10,12 +10,12 @@
       "web"
     ],
     "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "orientation": "default",
+    "icon": "./assets/PaperZeeIcon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/PaperZeeSplash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ff5500"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

@@ -5,12 +5,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Provider as ReduxProvider, useSelector, useDispatch } from 'react-redux';
 import s from './redux/index'
+import lang from './lang/index'
 var { store, login } = s;
 
 import DashScreen from './tabs/Dash';
 import SettingsScreen from './tabs/Settings';
 import ToolsScreen from './tabs/Tools';
 import MapScreen from './tabs/Map';
+import SearchScreen from './tabs/Search';
 
 import UserActivityScreen from './pages/User/Activity/Page';
 import MunzeeDetailsScreen from './pages/Munzee/Details/Page';
@@ -93,6 +95,16 @@ function Tabs() {
         tabBarLabel: 'Home',
         tabBarIcon: ({ color }) => (
           <MaterialCommunityIcons name="home" color={color} size={24} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Search"
+      component={SearchScreen}
+      options={{
+        tabBarLabel: "Search",
+        tabBarIcon: ({ color }) => (
+          <MaterialCommunityIcons name="magnify" color={color} size={24} />
         ),
       }}
     />

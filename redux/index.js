@@ -10,6 +10,9 @@ const defaultState = {
   loadingLogin: true,
   loggedIn: false,
   logins: true,
+  tick: 0,
+  code: '',
+  dash: [],
 };
 
 
@@ -24,9 +27,25 @@ var refresh = () => async (dispatch, getState) => {
 }
 
 var login_ = (data) => ({ type: "LOGIN", data: data })
+var dash_ = (data) => ({ type: "DASH", data: data })
+var setCode_ = (data) => ({ type: "SET_CODE", data: data })
+var levelSelect_ = (data) => ({ type: "LEVEL_SELECT", data: data })
+var tick = () => ({ type: "TICK" })
 var login = (data,noUpdate) => async (dispatch, getState) => {
   if(!noUpdate) await AsyncStorage.setItem('LOGINS',JSON.stringify({...getState().logins,...data}));
   dispatch(login_(data));
+}
+var dash = (data,noUpdate) => async (dispatch, getState) => {
+  if(!noUpdate) await AsyncStorage.setItem('DASH',JSON.stringify(data));
+  dispatch(dash_(data));
+}
+var setCode = (data,noUpdate) => async (dispatch, getState) => {
+  if(!noUpdate) await AsyncStorage.setItem('CODE',data);
+  dispatch(setCode_(data));
+}
+var levelSelect = (data,noUpdate) => async (dispatch, getState) => {
+  if(!noUpdate) await AsyncStorage.setItem('LEVEL_SELECT',JSON.stringify({...getState().clanLevelSelect,...data}));
+  dispatch(levelSelect_(data));
 }
 
 var rootReducer = (state = defaultState, action) => {
@@ -74,8 +93,31 @@ var rootReducer = (state = defaultState, action) => {
         ...state,
         requests: state.requests.map(i=>i.page==action.originalpage?{...i,expires:Date.now()+(20*60000)}:i),
         request_data: {
-          ...state.clans,
+          ...state.request_data,
           ...data
+        }
+      }
+    case 'TICK':
+      return {
+        ...state,
+        tick: state.tick+1
+      }
+    case 'SET_CODE':
+      return {
+        ...state,
+        code: action.data
+      }
+    case 'DASH':
+      return {
+        ...state,
+        dash: action.data
+      }
+    case 'LEVEL_SELECT':
+      return {
+        ...state,
+        clanLevelSelect: {
+          ...state.clanLevelSelect,
+          ...action.data,
         }
       }
     default:
@@ -87,10 +129,25 @@ var rootReducer = (state = defaultState, action) => {
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 setInterval(refreshRequests,60000,store);
+// setInterval(()=>{
+//   store.dispatch(tick());
+// },1000)
 
 AsyncStorage.getItem('LOGINS').then((data)=>{
   if(!data) return store.dispatch(login({},true));
   store.dispatch(login(JSON.parse(data),true));
 })
+AsyncStorage.getItem('DASH').then((data)=>{
+  if(!data) return store.dispatch(dash([],true));
+  store.dispatch(dash(JSON.parse(data),true));
+})
+AsyncStorage.getItem('CODE').then((data)=>{
+  if(!data) return;
+  store.dispatch(setCode(data,true));
+})
+AsyncStorage.getItem('LEVEL_SELECT').then((data)=>{
+  if(!data) return store.dispatch(levelSelect({},true));
+  store.dispatch(levelSelect(JSON.parse(data),true));
+})
 
-export default {store,refresh,login};
+export default {store,refresh,login,setCode,dash,levelSelect};
