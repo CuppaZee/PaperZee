@@ -24,6 +24,7 @@ export default function DashScreen() {
     [1605,"Bushrangers Gin"],
     [-2,"Bushrangers Shadow"],
     [251,"ALLSTARS"],
+    [1695,"ALLSTARSII"],
     [1793,"Hjælp, jeg er en fisk!"],
     [1551,"Cockers"],
     [19,"Maryland Munzee Militia (HC)"]
