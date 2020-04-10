@@ -11,14 +11,14 @@
     ],
     "version": "1.0.0",
     "orientation": "default",
-    "icon": "./assets/PaperZeeIcon.png",
+    "icon": "./assets/CuppaZeeIcon.png",
     "splash": {
-      "image": "./assets/PaperZeeSplash.png",
+      "image": "./assets/CuppaZeeSplash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ff5500"
+      "backgroundColor": "#00C35B"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 30000
     },
     "assetBundlePatterns": [
       "**/*"
@@ -28,7 +28,16 @@
     },
     "android": {
       "package": "uk.cuppazee.paper",
-      "versionCode": 1
+      "versionCode": 1,
+      "icon": "./assets/CuppaZeeIcon.png",
+      "adaptiveIcon": {
+        "backgroundColor": "#00C35B",
+        "foregroundImage": "./assets/CuppaZeeAndroid.png"
+      },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ]
     }
   }
 }
