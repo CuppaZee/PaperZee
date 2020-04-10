@@ -24,7 +24,7 @@ export default function DashScreen() {
     [1605,"Bushrangers Gin"],
     [-2,"Bushrangers Shadow"],
     [251,"ALLSTARS"],
-    [1695,"ALLSTARSII"],
+    [1695,"ALLSTARS II"],
     [1793,"Hjælp, jeg er en fisk!"],
     [1551,"Cockers"],
     [19,"Maryland Munzee Militia (HC)"]
@@ -65,9 +65,9 @@ export default function DashScreen() {
         </View>
         {!edit?<>
           {dash.map(i=>({
-            clan_stats:allclans.find(x=>x[0]==i.clan_id)?<View style={{padding:4,width:width>800?"50%":"100%"}}>
+            clan_stats:<View style={{padding:4,width:width>800?"50%":"100%"}}>
               <ClanStats clan_id={i.clan_id} game_id={85} />
-            </View>:<Text>Invalid Clan "{i.clan_id}". Please remove.</Text>
+            </View>
           }[i.type]))}
           {/* <View style={{padding:4,width:width>800?"50%":"100%"}}>
             <ClanStats clan_id={457} game_id={85} />
@@ -88,15 +88,21 @@ export default function DashScreen() {
           <View style={{width:"100%",height:20}}></View>
           {dash.filter(i=>i.type=="clan_stats").map(i=><View style={{padding:4,width:width>800?"50%":"100%"}}>
             <Card onPress={()=>remove(i.clan_id)}>
-              <Text style={{fontSize:20,fontWeight:"bold"}}>Remove "{(allclans.find(x=>x[0]==i.clan_id)||[])[1]||i.clan_id}"</Text>
+              <Text style={{fontSize:20,fontWeight:"bold"}}>Remove "{(allclans.find(x=>x[0]==i.clan_id)||[])[1]||`ID #${i.clan_id}`}"</Text>
             </Card>
           </View>)}
           <View style={{width:"100%",height:20}}></View>
-          {allclans.filter(x=>!dash.find(i=>i.clan_id==x[0])).map(i=><View style={{padding:4,width:width>800?"50%":"100%"}}>
+          {/* {allclans.filter(x=>!dash.find(i=>i.clan_id==x[0])).map(i=><View style={{padding:4,width:width>800?"50%":"100%"}}>
             <Card onPress={()=>add(i[0])}>
               <Text style={{fontSize:20,fontWeight:"bold"}}>Add "{i[1]}"</Text>
             </Card>
-          </View>)}
+          </View>)} */}
+          
+          <View style={{padding:4,width:width>800?"50%":"100%"}}>
+            <Card>
+              <Text style={{fontSize:20,fontWeight:"bold"}}>Clans can now be added from the Search page.</Text>
+            </Card>
+          </View>
           <View style={{width:"100%",height:20}}></View>
         </>}
         <View style={{padding:4,width:width>800?"50%":"100%"}}>

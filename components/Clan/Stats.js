@@ -44,7 +44,8 @@ export default function UserActivityDash({ game_id, clan_id }) {
   var dateString = `${date.getUTCFullYear()}-${(date.getUTCMonth() + 1).toString().padStart(2, '0')}-${(date.getUTCDate()).toString().padStart(2, '0')}`
   var dispatch = useDispatch();
   var { data } = useSelector(i => i.request_data[`clan/requirements/v1?game_id=${game_id}`] ?? {})
-  var { data: clan } = useSelector(i => i.request_data[`clan/details/formatted?game_id=${game_id}&clan_id=${clan_id}`] ?? {})
+  var { data: clan_data } = useSelector(i => i.request_data[`clan/details/v1?game_id=${game_id}&clan_id=${clan_id}`] ?? {})
+  var clan = clan_data?.data;
   var tick = useSelector(i => i.tick)
   var ls = useSelector(i => i.clanLevelSelect[clan_id]??4);
   var levelSelect = Number(ls.toString().slice(0,1));
@@ -58,10 +59,10 @@ export default function UserActivityDash({ game_id, clan_id }) {
   useFocusEffect(
     React.useCallback(() => {
       dispatch(request.add(`clan/requirements/v1?game_id=${game_id}`))
-      dispatch(request.add(`clan/details/formatted?game_id=${game_id}&clan_id=${clan_id}`))
+      dispatch(request.add(`clan/details/v1?game_id=${game_id}&clan_id=${clan_id}`))
       return () => {
         dispatch(request.remove(`clan/requirements/v1?game_id=${game_id}`))
-        dispatch(request.remove(`clan/details/formatted?game_id=${game_id}&clan_id=${clan_id}`))
+        dispatch(request.remove(`clan/details/v1?game_id=${game_id}&clan_id=${clan_id}`))
       };
     }, [game_id, clan_id])
   );
