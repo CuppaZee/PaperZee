@@ -76,7 +76,7 @@ export default function SearchScreen({ navigation }) {
                   <Text style={{fontWeight:"bold",fontSize:16}}>{i.name}</Text>
                   <Text style={{fontWeight:"bold",fontSize:12}}>{i.tagline}</Text>
                 </View>
-                <IconButton disabled={dash_list.find(x=>x.clan_id==i.clan_id)} size="32px" onPress={()=>addClan(i.clan_id)} icon="bookmark-plus" color="#016930" />
+                <IconButton disabled={!!dash_list.find(x=>x.clan_id==i.clan_id)} size={32} onPress={()=>addClan(i.clan_id)} icon="bookmark-plus" color="#016930" />
               </View>)}
             </ScrollView>
           </View>

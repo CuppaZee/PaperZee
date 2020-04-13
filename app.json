@@ -28,7 +28,7 @@
     },
     "android": {
       "package": "uk.cuppazee.paper",
-      "versionCode": 1,
+      "versionCode": 2,
       "icon": "./assets/CuppaZeeIcon.png",
       "adaptiveIcon": {
         "backgroundColor": "#00C35B",

@@ -13,6 +13,7 @@ const defaultState = {
   tick: 0,
   code: '',
   dash: [],
+  clanLevelSelect: {}
 };
 
 
