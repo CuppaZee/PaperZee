@@ -14,7 +14,7 @@ import ToolsScreen from './tabs/Tools';
 import MapScreen from './tabs/Map';
 import SearchScreen from './tabs/Search';
 
-import UserActivityScreen from './pages/User/Activity/Page';
+import UserActivityScreen from './pages/User/Activity';
 import MunzeeDetailsScreen from './pages/Munzee/Details/Page';
 
 import { Platform, View, Text } from 'react-native';

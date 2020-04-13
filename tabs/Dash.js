@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button, Text, View, ScrollView } from 'react-native';
-import UserActivityDash from '../pages/User/Activity/Dash';
+import UserActivityDash from '../pages/User/Dash';
 import ClanGroupDash from '../pages/Clan/Group/Dash';
 import ClanRequirements from '../components/Clan/Requirements';
 import ClanStats from '../components/Clan/Stats';
