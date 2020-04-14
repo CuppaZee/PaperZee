@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "CuppaZee",
+    "owner": "sohcah",
     "slug": "PaperZee",
     "privacy": "public",
     "platforms": [
@@ -8,6 +9,8 @@
       "android",
       "web"
     ],
+    "githubUrl": "https://github.com/CuppaZee/PaperZee",
+    "scheme": "cuppazee",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/CuppaZeeIcon.png",
@@ -26,8 +29,13 @@
       "supportsTablet": true
     },
     "android": {
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAOiVpM8NwPruxhr-Dtx1_QyrPP6ecr9s8"
+        }
+      },
       "package": "uk.cuppazee.paper",
-      "versionCode": 2,
+      "versionCode": 4,
       "icon": "./assets/CuppaZeeIcon.png",
       "adaptiveIcon": {
         "backgroundColor": "#00C35B",
@@ -37,6 +45,13 @@
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION"
       ]
+    },
+    "notification": {
+      "icon": "./assets/CuppaZeeNotification.png",
+      "color": "#00C35B",
+      "iosDisplayInForeground": true,
+      "androidMode": "default",
+      "androidCollapsedTitle": "#{unread_notifications} Alerts"
     }
   }
 }

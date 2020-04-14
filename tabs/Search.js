@@ -16,7 +16,6 @@ export default function SearchScreen({ navigation }) {
   var [search,setSearch] = React.useState('');
   var { data: clans } = useSelector(i => i.request_data[`clan/list/v1?format=list&query=${encodeURIComponent(search)}`] ?? {});
   var dash_list = useSelector(i => i.dash);
-  console.log(clans);
   var dispatch = useDispatch();
   useFocusEffect(
     React.useCallback(() => {

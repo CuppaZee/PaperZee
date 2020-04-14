@@ -45,19 +45,20 @@ export default function UserActivityDash({user_id}) {
   var date = new Date(Date.now() - (5 * 60 * 60000));
   var dateString = `${date.getUTCFullYear()}-${(date.getUTCMonth() + 1).toString().padStart(2, '0')}-${(date.getUTCDate()).toString().padStart(2, '0')}`
   var dispatch = useDispatch();
+  var {username} = useSelector(i => i.logins[user_id]);
   var { data } = useSelector(i => i.request_data[`user/activity?user_id=${user_id}&day=${dateString}`] ?? {})
-  var { data: userdata } = useSelector(i => i.request_data[`user/details?user_id=${user_id}`] ?? {})
+  // var { data: userdata } = useSelector(i => i.request_data[`user/details?user_id=${user_id}`] ?? {})
   useFocusEffect(
     React.useCallback(() => {
       dispatch(request.add(`user/activity?user_id=${user_id}&day=${dateString}`))
-      dispatch(request.add(`user/details?user_id=${user_id}`))
+      // dispatch(request.add(`user/details?user_id=${user_id}`))
       return () => {
         dispatch(request.remove(`user/activity?user_id=${user_id}&day=${dateString}`))
-        dispatch(request.remove(`user/details?user_id=${user_id}`))
+        // dispatch(request.remove(`user/details?user_id=${user_id}`))
       };
     }, [user_id])
   );
-  if (!data?.data?.captures && !userdata?.data?.username) {
+  if (!data?.data?.captures) {
     if(!data) {
       return (
         <Card>
@@ -84,7 +85,7 @@ export default function UserActivityDash({user_id}) {
       <View style={{backgroundColor:"#016930",padding:8, borderTopLeftRadius: 8, borderTopRightRadius: 8, flexDirection:"row", alignItems: "center"}}>
         {/* <MaterialCommunityIcons name="account" size={24} color="#fff" /> */}
         <Image style={{height:32,width:32,borderRadius:32}} source={{uri:`https://munzee.global.ssl.fastly.net/images/avatars/ua${Number(user_id).toString(36)}.png`}} />
-        <Text style={{paddingLeft: 4, fontWeight:"bold",color:"#fff",fontSize:16,flex:1}}>{userdata?.data?.username??user_id}</Text>
+        <Text style={{paddingLeft: 4, fontWeight:"bold",color:"#fff",fontSize:16,flex:1}}>{username??user_id}</Text>
         <MaterialCommunityIcons name="chevron-right" size={24} color="#fff7" />
         {/* <Text style={{color:"white",fontWeight:"bold",fontSize:20}}>{userdata?.data?.username??user_id}</Text> */}
       </View>

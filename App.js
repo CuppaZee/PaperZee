@@ -64,7 +64,6 @@ function AuthSuccessScreen(props) {
   var nav = useNavigation();
   if(auth&&loggedIn) nav.replace('Home');
   React.useEffect(()=>{
-    console.log(props.route)
     if(!props.route?.params?.code) {
       nav.replace('Auth');
     } else {
