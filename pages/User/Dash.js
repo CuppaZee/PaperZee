@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Text, View, Image, ScrollView, FlatList, TouchableHighlight } from 'react-native';
+import { Text, View, Image, ScrollView, FlatList, TouchableHighlight, ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { List, ActivityIndicator, TouchableRipple } from 'react-native-paper';
+import { List, TouchableRipple } from 'react-native-paper';
 import request from '../../redux/request'
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,7 +46,7 @@ export default function UserActivityDash({user_id}) {
   var dateString = `${date.getUTCFullYear()}-${(date.getUTCMonth() + 1).toString().padStart(2, '0')}-${(date.getUTCDate()).toString().padStart(2, '0')}`
   var dispatch = useDispatch();
   var {username} = useSelector(i => i.logins[user_id]);
-  var { data } = useSelector(i => i.request_data[`user/activity?user_id=${user_id}&day=${dateString}`] ?? {})
+  var { data } = useSelector(i => i.request_data[`user/activity?user_id=${user_id}&day=${dateString}`]) ?? {}
   // var { data: userdata } = useSelector(i => i.request_data[`user/details?user_id=${user_id}`] ?? {})
   useFocusEffect(
     React.useCallback(() => {
@@ -79,6 +79,9 @@ export default function UserActivityDash({user_id}) {
       );
     }
   }
+  function isRenovation(act) {
+    return !!(act.pin.includes('/renovation.') && act.captured_at);
+  }
   return (
     // <View style={{ flex: 1, alignItems: "stretch", flexDirection: "column", backgroundColor: "#e9ffdc"??"#e6fcd9", borderRadius: 8 }}>
     <Card noPad>
@@ -94,10 +97,10 @@ export default function UserActivityDash({user_id}) {
           <View><Text style={{ fontSize: 24, fontWeight: "bold" }}>{[...data?.data?.captures??[], ...data?.data?.deploys??[], ...data?.data?.captures_on??[]].reduce((a, b) => a + Number(b.points_for_creator ?? b.points), 0)} Points</Text></View>
         </View>
         <View key="captures" style={{ flexDirection: "column", width: "100%", alignItems: "center", paddingLeft: 8, paddingRight: 8, backgroundColor: 'transparent' ?? '#aaffaa', borderRadius: 0 }}>
-          <View><Text style={{ color: 'black' ?? '#004400', fontSize: 20, fontWeight: "bold" }}>{data.data.captures.length} Capture{data.data.captures.length !== 1 ? 's' : ''} - {data.data.captures.reduce((a, b) => a + Number(b.points), 0)} Points</Text></View>
+          <View><Text style={{ color: 'black' ?? '#004400', fontSize: 20, fontWeight: "bold" }}>{data.data.captures.filter(i=>!isRenovation(i)).length} Capture{data.data.captures.filter(i=>!isRenovation(i)).length !== 1 ? 's' : ''} - {data.data.captures.filter(i=>!isRenovation(i)).reduce((a, b) => a + Number(b.points), 0)} Points</Text></View>
           <View style={{ flexWrap: "wrap", flexDirection: "row", justifyContent: "center" }}>
             {
-              count(data.data.captures, "pin").map(cap => <View key={cap[0]} style={{ padding: 2, alignItems: "center" }}>
+              count(data.data.captures.filter(i=>!isRenovation(i)), "pin").map(cap => <View key={cap[0]} style={{ padding: 2, alignItems: "center" }}>
                 <Image style={{ height: 32, width: 32 }} source={{ uri: cap[0] }} />
                 <Text style={{ color: 'black' ?? '#004400' }}>{cap[1]}</Text>
               </View>)
@@ -116,16 +119,30 @@ export default function UserActivityDash({user_id}) {
           </View>
         </View>
         <View key="capons" style={{ flexDirection: "column", width: "100%", alignItems: "center" }}>
-          <View style={{ paddingLeft: 8, paddingRight: 8, backgroundColor: 'transparent' ?? '#ffbcad', borderRadius: 8 }}><Text style={{ color: 'black' ?? `#401700`, fontSize: 20, fontWeight: "bold" }}>{data.data.captures_on.length} Capon{data.data.captures_on.length !== 1 ? 's' : ''} - {data.data.captures_on.reduce((a, b) => a + Number(b.points_for_creator), 0)} Points</Text></View>
+          <View style={{ paddingLeft: 8, paddingRight: 8, backgroundColor: 'transparent' ?? '#ffbcad', borderRadius: 8 }}><Text style={{ color: 'black' ?? `#401700`, fontSize: 20, fontWeight: "bold" }}>{data.data.captures_on.filter(i=>!isRenovation(i)).length} Capon{data.data.captures_on.filter(i=>!isRenovation(i)).length !== 1 ? 's' : ''} - {data.data.captures_on.filter(i=>!isRenovation(i)).reduce((a, b) => a + Number(b.points_for_creator), 0)} Points</Text></View>
           <View style={{ flexWrap: "wrap", flexDirection: "row", justifyContent: "center" }}>
             {
-              count(data.data.captures_on, "pin").map(cap => <View key={cap[0]} style={{ padding: 2, alignItems: "center" }}>
+              count(data.data.captures_on.filter(i=>!isRenovation(i)), "pin").map(cap => <View key={cap[0]} style={{ padding: 2, alignItems: "center" }}>
                 <Image style={{ height: 32, width: 32 }} source={{ uri: cap[0] }} />
                 <Text style={{ color: 'black' ?? `#401700` }}>{cap[1]}</Text>
               </View>)
             }
           </View>
         </View>
+        {data.data.captures.filter(i=>isRenovation(i)).length>0&&<View key="renovations" style={{ flexDirection: "column", width: "100%", alignItems: "center" }}>
+          <View style={{ paddingLeft: 8, paddingRight: 8, backgroundColor: 'transparent' ?? '#ffbcad', borderRadius: 8 }}>
+            <Text style={{ color: 'black' ?? `#401700`, fontSize: 20, fontWeight: "bold" }}>
+              {data.data.captures.filter(i=>isRenovation(i)).length} Renovation{data.data.captures.filter(i=>isRenovation(i)).length !== 1 ? 's' : ''} - {data.data.captures.filter(i=>isRenovation(i)).reduce((a, b) => a + Number(b.points), 0)} Points
+            </Text>
+          </View>
+        </View>}
+        {data.data.captures_on.filter(i=>isRenovation(i)).length>0&&<View key="renons" style={{ flexDirection: "column", width: "100%", alignItems: "center" }}>
+          <View style={{ paddingLeft: 8, paddingRight: 8, backgroundColor: 'transparent' ?? '#ffbcad', borderRadius: 8 }}>
+            <Text style={{ color: 'black' ?? `#401700`, fontSize: 20, fontWeight: "bold" }}>
+              {data.data.captures_on.filter(i=>isRenovation(i)).length} Renov-on{data.data.captures_on.filter(i=>isRenovation(i)).length !== 1 ? 's' : ''} - {data.data.captures_on.filter(i=>isRenovation(i)).reduce((a, b) => a + Number(b.points_for_creator), 0)} Points
+            </Text>
+          </View>
+        </View>}
         <View style={{flex:1,borderBottomColor:'#01693077',borderBottomWidth:1}}></View>
       </>:(data?<View style={{flex: 1, borderBottomColor:'#01693077',borderBottomWidth:1, justifyContent: "center", alignItems: "center"}}>
         <MaterialCommunityIcons name="alert" size={48} color="#d00" />

@@ -62,7 +62,8 @@ export default function DashScreen() {
           i.key=i.clan_id;
           return i;
         }),
-        {type:"blankHack"}
+        {type:"blankHack"},
+        {type:"edit",edit:edit}
       ]}
       renderItem={({ item }) => ({
         clan_stats:<View style={{ padding: 4, flex: 1 }}>
@@ -74,7 +75,28 @@ export default function DashScreen() {
         user:<View style={{ padding: 4, flex: 1 }}>
           <UserActivityDash user_id={item.user_id} />
         </View>,
-        blankHack:<View style={{flex:1,padding:4}}></View>
+        blankHack:<View style={{flex:1,padding:4}}></View>,
+        edit: <View style={{flexDirection:"column"}}>{edit&&<>
+              <View style={{width:"100%",height:20}}></View>
+              {dash.filter(i=>i.type=="clan_stats").map(i=><View style={{padding:4}}>
+                <Card onPress={()=>remove(i.clan_id)}>
+                  <Text style={{fontSize:20,fontWeight:"bold"}}>Remove "{(allclans.find(x=>x[0]==i.clan_id)||[])[1]||`ID #${i.clan_id}`}"</Text>
+                </Card>
+              </View>)}
+              <View style={{width:"100%",height:20}}></View>
+    
+              <View style={{padding:4}}>
+                <Card>
+                  <Text style={{fontSize:20,fontWeight:"bold"}}>Clans can now be added from the Search page.</Text>
+                </Card>
+              </View>
+              <View style={{width:"100%",height:20}}></View>
+            </>}
+            <View style={{padding:4}}>
+              <Card onPress={()=>setEdit(!edit)}>
+                <Text style={{fontSize:20,fontWeight:"bold"}}>{edit?'Finish Editing':'Edit'} Clan List</Text>
+              </Card>
+            </View></View>
       }[item.type])}
       keyExtractor={item => (item.key||"xd").toString()}
     />

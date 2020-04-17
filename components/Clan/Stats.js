@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Text, View, Image, ScrollView, Picker, FlatList, TouchableHighlight, Platform } from 'react-native';
+import { Text, View, Image, ScrollView, Picker, FlatList, TouchableHighlight, Platform, ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { List, ActivityIndicator } from 'react-native-paper';
+import { List } from 'react-native-paper';
 import request from '../../redux/request'
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -134,8 +134,11 @@ export default function UserActivityDash({ game_id, clan_id }) {
   return (
     // <View style={{ flex: 1, alignItems: "stretch", flexDirection: "column", backgroundColor: "#e9ffdc"??"#e6fcd9", borderRadius: 8 }}>
     <Card noPad>
-      <View style={{ backgroundColor: "#016930", padding: 8, borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>
-        <Text style={{ color: "white", fontWeight: "bold", fontSize: 20 }}>{clan?.details?.name}</Text>
+      <View style={{ backgroundColor: "#016930", paddingHorizontal: 8, borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>
+      <View style={{flex:1,paddingVertical:8}}>
+          <Text style={{ color: "white", fontWeight: "bold", fontSize: 12, opacity: 0.7, lineHeight: 12 }}>{clan?.details?.goal??'Shadow Clan'}</Text>
+          <Text style={{ color: "white", fontWeight: "bold", fontSize: 16, lineHeight: 16 }}>{clan?.details?.name}</Text>
+        </View>
       </View>
       <View style={{flexDirection:"row"}}>
         <ScrollView horizontal={true} style={{flex:1}} contentContainerStyle={{flexDirection:"row",minWidth:'100%',paddingLeft:100}}>

@@ -38,7 +38,7 @@ export default function UserInventoryScreen() {
           <View><Text style={{ fontSize: 24, fontWeight: "bold" }}>{[...data.data.captures, ...data.data.deploys, ...data.data.captures_on].reduce((a, b) => a + Number(b.points_for_creator ?? b.points), 0)} Points</Text></View>
         </View>,
         <View key="captures" style={{ flexDirection: "column", width: "100%", alignItems: "center", paddingLeft: 8, paddingRight: 8, backgroundColor: 'transparent' ?? '#aaffaa', borderRadius: 0 }}>
-          <View><Text style={{ color: 'black' ?? '#004400', fontSize: 20, fontWeight: "bold" }}>{data.data.captures.length} Capture{data.data.captures.length !== 1 ? 's' : ''} - {data.data.captures.reduce((a, b) => a + Number(b.points), 0)} Points</Text></View>
+          <View><Text style={{ color: 'black' ?? '#004400', fontSize: 20, fontWeight: "bold" }}>Undeployed</Text></View>
           <View style={{ flexWrap: "wrap", flexDirection: "row", justifyContent: "center" }}>
             {
               count(data.data.captures, "pin").map(cap => <View key={cap[0]} style={{ padding: 2, alignItems: "center" }}>

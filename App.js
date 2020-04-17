@@ -15,6 +15,8 @@ import MapScreen from './tabs/Map';
 import SearchScreen from './tabs/Search';
 
 import UserActivityScreen from './pages/User/Activity';
+import UserInventoryScreen from './pages/User/Inventory';
+
 import MunzeeDetailsScreen from './pages/Munzee/Details/Page';
 
 import { Platform, View, Text } from 'react-native';
@@ -232,6 +234,13 @@ function App() {
               title: 'User Activity',
             }}
             component={UserActivityScreen}
+          />
+          <Stack.Screen
+            name="UserInventory"
+            options={{
+              title: 'User Inventory',
+            }}
+            component={UserInventoryScreen}
           />
           <Stack.Screen
             name="MunzeeDetails"

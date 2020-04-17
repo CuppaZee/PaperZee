@@ -6,9 +6,9 @@ import r from "./redux/index";
 
 export default function () {
   var dispatch = useDispatch();
-  var loading = useSelector(i=>i.loading);
+  var loading = useSelector(i=>i.loading>0);
   return (
-    loading > 0 ? <View style={{width:48,justifyContent:"center"}}><ActivityIndicator size="small" color="#ffffff" /></View> : <IconButton
+    loading ? <View style={{width:48,justifyContent:"center"}}><ActivityIndicator size="small" color="#ffffff" /></View> : <IconButton
       onPress={() => dispatch(r.refresh())}
       color="#fff"
       icon="refresh"

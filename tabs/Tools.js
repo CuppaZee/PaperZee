@@ -59,6 +59,10 @@ export default function ToolsScreen({ navigation }) {
     <View style={{ flex: 1, backgroundColor: '#c6e3b6', justifyContent: 'center', alignItems: 'center' }}>
       <Text>Tools Page</Text>
       <Button
+        title="Bouncers in Limbo"
+        onPress={sendNotification}
+      />
+      <Button
         disabled={!push}
         title="Push Notification Test (Android)"
         onPress={sendNotification}
