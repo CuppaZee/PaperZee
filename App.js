@@ -1,14 +1,16 @@
 import * as React from 'react';
 import { NavigationContainer, useLinking, useNavigation } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Provider as ReduxProvider, useSelector, useDispatch } from 'react-redux';
 import s from './redux/index'
 import lang from './lang/index'
-var { store, login } = s;
+var { store, login, setCurrentRoute } = s;
 
-import DashScreen from './tabs/Dash';
+// import DashScreen from './tabs/Dash';
+import AllClansScreen from './tabs/AllClans';
 import SettingsScreen from './tabs/Settings';
 import ToolsScreen from './tabs/Tools';
 import MapScreen from './tabs/Map';
@@ -25,9 +27,20 @@ import LoadingButton from './LoadingButton';
 import WebView from 'react-native-webview';
 import { Linking } from 'expo';
 
-const Tab = createMaterialBottomTabNavigator();
+import DrawerContent from './Drawer';
+import { useDimensions } from '@react-native-community/hooks';
+
+// const Tab = createMaterialBottomTabNavigator();
+const Drawer = createDrawerNavigator();
 
 const Stack = createStackNavigator();
+
+function RedirectScreen() {
+  var nav = useNavigation();
+  var users = useSelector(i=>Object.keys(i.logins??{}));
+  if(users && users[0]) nav.replace('UserActivity',{userid:Number(users[0])})
+  return <Text>_redirect</Text>;
+}
 
 function AuthScreen() {
   var [auth,setAuth] = React.useState(false);
@@ -83,13 +96,135 @@ function AuthSuccessScreen(props) {
   return <Text>...</Text>
 }
 
+function MainNav () {
+  var { width } = useDimensions().window;
+  const loggedIn = useSelector(i=>i.loggedIn);
+  return <Stack.Navigator
+    screenOptions={({ navigation, route }) => ({
+      gestureEnabled: Platform.OS == 'ios',
+      headerStyle: {
+        backgroundColor: '#016930'
+      },
+      headerLeft: () => (
+        width<=1000 || navigation.canGoBack()?<View style={{flexDirection:"row"}}>
+          {width<=1000&&<IconButton
+            onPress={() => navigation.toggleDrawer()}
+            color="#fff"
+            icon="menu"
+          />}
+          {/* {(route.name == "Home" || !loggedIn || !navigation.canGoBack()) ? null : <IconButton
+            onPress={() => navigation.goBack()}
+            color="#fff"
+            icon="arrow-left"
+          />} */}
+        </View>:null
+      ),
+      headerRight: () => {
+        return loggedIn && (
+          <View style={{ flexDirection: "row" }}>
+            {(route.name == "Home" || !loggedIn || !navigation.canGoBack()) ? null : <IconButton
+              onPress={() => navigation.goBack()}
+              color="#fff"
+              icon="arrow-left"
+            />}
+            {/* {(route.name == "Home" || !navigation.canGoBack()) ? null : <IconButton
+              onPress={() => navigation.replace('Home')}
+              color="#fff"
+              icon="home"
+            />} */}
+            <LoadingButton />
+          </View>
+        )
+      },
+      headerTintColor: '#fff',
+    })}>
+    {loggedIn && <>
+      <Stack.Screen
+        name="_redirect"
+        component={RedirectScreen}
+      />
+      <Stack.Screen
+        name="Search"
+        component={SearchScreen}
+      />
+      <Stack.Screen
+        name="Map"
+        component={MapScreen}
+      />
+      <Stack.Screen
+        name="Tools"
+        component={ToolsScreen}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={SettingsScreen}
+      />
+      <Stack.Screen
+        name="AllClans"
+        component={AllClansScreen}
+      />
+      {/* <Stack.Screen
+        name="Home"
+        options={{
+          title: "Hello",
+        }}
+        // component={Tabs}
+      /> */}
+      <Stack.Screen
+        name="UserActivity"
+        options={{
+          title: 'User Activity',
+        }}
+        component={UserActivityScreen}
+      />
+      <Stack.Screen
+        name="UserInventory"
+        options={{
+          title: 'User Inventory',
+        }}
+        component={UserInventoryScreen}
+      />
+      <Stack.Screen
+        name="MunzeeDetails"
+        options={{
+          title: 'Munzee Details',
+        }}
+        component={MunzeeDetailsScreen}
+      />
+    </>}
+    <Stack.Screen
+      name="Auth"
+      options={{
+        title: "Authenticate",
+      }}
+      component={AuthScreen}
+    />
+    <Stack.Screen
+      name="AuthSuccess"
+      options={{
+        title: 'Authentication Successful',
+      }}
+      component={AuthSuccessScreen}
+    />
+  </Stack.Navigator>
+}
+
 function Tabs() {
-  return <Tab.Navigator
+  var { width } = useDimensions().window;
+  return <Drawer.Navigator
+    drawerStyle={{width:240}}
+    drawerContent={props => <DrawerContent {...props} />}
+    drawerType={width>1000?"permanent":"back"}
     initialRouteName="Home"
     barStyle={{ backgroundColor: '#016930' }}
     shifting={true}
+    edgeWidth={100}
   >
-    <Tab.Screen
+    <Drawer.Screen
+      name="__primary"
+      component={MainNav}
+    />
+    {/* <Drawer.Screen
       name="Dash"
       component={DashScreen}
       options={{
@@ -99,7 +234,7 @@ function Tabs() {
         ),
       }}
     />
-    <Tab.Screen
+    <Drawer.Screen
       name="Search"
       component={SearchScreen}
       options={{
@@ -109,7 +244,7 @@ function Tabs() {
         ),
       }}
     />
-    <Tab.Screen
+    <Drawer.Screen
       name="Map"
       component={MapScreen}
       options={{
@@ -119,7 +254,7 @@ function Tabs() {
         ),
       }}
     />
-    <Tab.Screen
+    <Drawer.Screen
       name="Tools"
       component={ToolsScreen}
       options={{
@@ -129,7 +264,7 @@ function Tabs() {
         ),
       }}
     />
-    <Tab.Screen
+    <Drawer.Screen
       name="Settings"
       component={SettingsScreen}
       options={{
@@ -138,18 +273,19 @@ function Tabs() {
           <MaterialCommunityIcons name="settings" color={color} size={24} />
         ),
       }}
-    />
-  </Tab.Navigator>
+    /> */}
+  </Drawer.Navigator>
 }
 
 function App() {
   const loadingLogin = useSelector(i=>i.loadingLogin);
-  const loggedIn = useSelector(i=>i.loggedIn);
   const ref = React.useRef();
+  const dispatch = useDispatch();
 
   const { getInitialState } = useLinking(ref, {
     prefixes: ['https://paper.cuppazee.uk', 'cuppazee://'],
     config: {
+      __primary: '',
       Home: 'Home',
       UserActivity: {
         path: 'User/:userid/Activity',
@@ -176,6 +312,8 @@ function App() {
       })
       .then(state => {
         if (state !== undefined) {
+          console.log(state);
+          dispatch(setCurrentRoute(state?.routes?.[0]??{}))
           setInitialState(state);
         }
 
@@ -183,7 +321,9 @@ function App() {
       });
   }, [getInitialState]);
 
-  function handleStateChange() { }
+  function handleStateChange(a,b,c) {
+    dispatch(setCurrentRoute(a?.routes?.[0]?.state?.routes?.[0]??{}))
+  }
 
   if (loadingLogin) {
     return <Text>Loading...</Text>;
@@ -193,78 +333,7 @@ function App() {
   }
   return (
     <NavigationContainer onStateChange={handleStateChange} initialState={initialState} ref={ref}>
-      <Stack.Navigator
-        screenOptions={({ navigation, route }) => ({
-          gestureEnabled: Platform.OS == 'ios',
-          headerStyle: {
-            backgroundColor: '#016930'
-          },
-          headerLeft: () => (
-            (route.name == "Home" || !loggedIn) ? null : <IconButton
-              onPress={() => { navigation.canGoBack() ? navigation.goBack() : navigation.replace('Home') }}
-              color="#fff"
-              icon={navigation.canGoBack() ? 'arrow-left' : 'home'}
-            />
-          ),
-          headerRight: () => {
-            return loggedIn && (
-              <View style={{ flexDirection: "row" }}>
-                {(route.name == "Home" || !navigation.canGoBack()) ? null : <IconButton
-                  onPress={() => navigation.replace('Home')}
-                  color="#fff"
-                  icon="home"
-                />}
-                <LoadingButton />
-              </View>
-            )
-          },
-          headerTintColor: '#fff',
-        })}>
-        {loggedIn && <>
-          <Stack.Screen
-            name="Home"
-            options={{
-              title: JSON.stringify(store.requests),
-            }}
-            component={Tabs}
-          />
-          <Stack.Screen
-            name="UserActivity"
-            options={{
-              title: 'User Activity',
-            }}
-            component={UserActivityScreen}
-          />
-          <Stack.Screen
-            name="UserInventory"
-            options={{
-              title: 'User Inventory',
-            }}
-            component={UserInventoryScreen}
-          />
-          <Stack.Screen
-            name="MunzeeDetails"
-            options={{
-              title: 'Munzee Details',
-            }}
-            component={MunzeeDetailsScreen}
-          />
-        </>}
-        <Stack.Screen
-          name="Auth"
-          options={{
-            title: "Authenticate",
-          }}
-          component={AuthScreen}
-        />
-        <Stack.Screen
-          name="AuthSuccess"
-          options={{
-            title: 'Authentication Successful',
-          }}
-          component={AuthSuccessScreen}
-        />
-      </Stack.Navigator>
+      <Tabs/>
     </NavigationContainer>
   );
 }
