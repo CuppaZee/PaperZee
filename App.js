@@ -11,6 +11,7 @@ var { store, login, setCurrentRoute } = s;
 
 // import DashScreen from './tabs/Dash';
 import AllClansScreen from './tabs/AllClans';
+import ScannerScreen from './tabs/Scanner';
 import SettingsScreen from './tabs/Settings';
 import ToolsScreen from './tabs/Tools';
 import MapScreen from './tabs/Map';
@@ -21,7 +22,7 @@ import UserInventoryScreen from './pages/User/Inventory';
 
 import MunzeeDetailsScreen from './pages/Munzee/Details/Page';
 
-import { Platform, View, Text } from 'react-native';
+import { Platform, View, Text, StatusBar } from 'react-native';
 import { IconButton, ActivityIndicator } from 'react-native-paper'
 import LoadingButton from './LoadingButton';
 import WebView from 'react-native-webview';
@@ -38,7 +39,9 @@ const Stack = createStackNavigator();
 function RedirectScreen() {
   var nav = useNavigation();
   var users = useSelector(i=>Object.keys(i.logins??{}));
-  if(users && users[0]) nav.replace('UserActivity',{userid:Number(users[0])})
+  if(users && users[0]) {
+    nav.replace('UserActivity',{userid:Number(users[0])});
+  }
   return <Text>_redirect</Text>;
 }
 
@@ -77,10 +80,10 @@ function AuthSuccessScreen(props) {
   var loggedIn = useSelector(i=>i.loggedIn);
   var dispatch = useDispatch();
   var nav = useNavigation();
-  if(auth&&loggedIn) nav.replace('Home');
+  if(auth&&loggedIn) nav.replace('_redirect');
   React.useEffect(()=>{
     if(!props.route?.params?.code) {
-      nav.replace('Auth');
+      nav.replace('_redirect');
     } else {
       var authx = props.route?.params
       var x = {};
@@ -88,8 +91,10 @@ function AuthSuccessScreen(props) {
         username: authx.name,
         code: authx.code
       }
+      console.log('AUTHED',authx)
       setAuth(true);
       dispatch(login(x));
+      console.log('AUTHED')
     }
   },[])
   if(auth) return <View style={{flex:1,alignContent:"center"}}><ActivityIndicator size="large" color="#000" /></View>
@@ -99,18 +104,19 @@ function AuthSuccessScreen(props) {
 function MainNav () {
   var { width } = useDimensions().window;
   const loggedIn = useSelector(i=>i.loggedIn);
+  const theme = useSelector(i=>i.themes[i.theme]);
   return <Stack.Navigator
     screenOptions={({ navigation, route }) => ({
       gestureEnabled: Platform.OS == 'ios',
       headerStyle: {
-        backgroundColor: '#016930'
+        backgroundColor: theme.navigation.bg
       },
       headerLeft: () => (
-        width<=1000 || navigation.canGoBack()?<View style={{flexDirection:"row"}}>
+        width<=1000?<View style={{flexDirection:"row"}}>
           {width<=1000&&<IconButton
             onPress={() => navigation.toggleDrawer()}
             color="#fff"
-            icon="menu"
+            icon="home"
           />}
           {/* {(route.name == "Home" || !loggedIn || !navigation.canGoBack()) ? null : <IconButton
             onPress={() => navigation.goBack()}
@@ -122,8 +128,8 @@ function MainNav () {
       headerRight: () => {
         return loggedIn && (
           <View style={{ flexDirection: "row" }}>
-            {(route.name == "Home" || !loggedIn || !navigation.canGoBack()) ? null : <IconButton
-              onPress={() => navigation.goBack()}
+            {(route.name == "Home" || !loggedIn || navigation.dangerouslyGetState().index<1) ? null : <IconButton
+              onPress={() => navigation.pop()}
               color="#fff"
               icon="arrow-left"
             />}
@@ -158,6 +164,10 @@ function MainNav () {
       <Stack.Screen
         name="Settings"
         component={SettingsScreen}
+      />
+      <Stack.Screen
+        name="Scanner"
+        component={ScannerScreen}
       />
       <Stack.Screen
         name="AllClans"
@@ -201,9 +211,7 @@ function MainNav () {
     />
     <Stack.Screen
       name="AuthSuccess"
-      options={{
-        title: 'Authentication Successful',
-      }}
+      label="Auth Success"
       component={AuthSuccessScreen}
     />
   </Stack.Navigator>
@@ -212,17 +220,17 @@ function MainNav () {
 function Tabs() {
   var { width } = useDimensions().window;
   return <Drawer.Navigator
-    drawerStyle={{width:240}}
+    drawerStyle={{width:width>500?240:width}}
     drawerContent={props => <DrawerContent {...props} />}
     drawerType={width>1000?"permanent":"back"}
-    initialRouteName="Home"
-    barStyle={{ backgroundColor: '#016930' }}
-    shifting={true}
     edgeWidth={100}
+    openByDefault={true}
   >
     <Drawer.Screen
       name="__primary"
+      label="__primary"
       component={MainNav}
+      // component={App}
     />
     {/* <Drawer.Screen
       name="Dash"
@@ -285,20 +293,31 @@ function App() {
   const { getInitialState } = useLinking(ref, {
     prefixes: ['https://paper.cuppazee.uk', 'cuppazee://'],
     config: {
-      __primary: '',
-      Home: 'Home',
-      UserActivity: {
-        path: 'User/:userid/Activity',
-        parse: {
-          userid: Number
-        }
-      },
-      MunzeeDetails: 'Munzee/:url',
-      AuthSuccess: 'authsuccess/:code/:id/:name'
+      __primary: {
+        path: '__you_should_never_see_this_please_report_it_on_facebook_at_cuppazee_or_via_email_at_mail_at_cuppazee_dot_uk',
+        screens: {
+          Tools: 'tools',
+          Search: 'search',
+          Map: 'maps',
+          Scanner: 'scanner',
+          Settings: 'settings',
+          AllClans: 'clans/list',
+          UserActivity: {
+            path: 'user/:userid/activity',
+            parse: {
+              userid: Number
+            }
+          },
+          AuthSuccess: 'authsuccess/:code/:id/:name',
+          Auth: 'auth',
+          MunzeeDetails: 'munzee/:url',
+        },
+      }
     },
   });
   var [isReady, setIsReady] = React.useState(false);
   var [initialState, setInitialState] = React.useState();
+  var theme = useSelector(i=>i.themes[i.theme])
 
   React.useEffect(() => {
     Promise.race([
@@ -312,8 +331,8 @@ function App() {
       })
       .then(state => {
         if (state !== undefined) {
-          console.log(state);
-          dispatch(setCurrentRoute(state?.routes?.[0]??{}))
+          console.log('Initial Route',state?.routes?.[0]?.state?.routes?.slice?.()?.reverse?.()?.[0]);
+          setTimeout(()=>dispatch(setCurrentRoute(state?.routes?.[0]?.state?.routes?.slice?.()?.reverse?.()?.[0]??{})),100);
           setInitialState(state);
         }
 
@@ -322,7 +341,7 @@ function App() {
   }, [getInitialState]);
 
   function handleStateChange(a,b,c) {
-    dispatch(setCurrentRoute(a?.routes?.[0]?.state?.routes?.[0]??{}))
+    dispatch(setCurrentRoute(a?.routes?.[0]?.state?.routes?.slice?.()?.reverse?.()?.[0]??{}))
   }
 
   if (loadingLogin) {
@@ -332,8 +351,10 @@ function App() {
     return null;
   }
   return (
-    <NavigationContainer onStateChange={handleStateChange} initialState={initialState} ref={ref}>
+    <NavigationContainer independent={true} onStateChange={handleStateChange} initialState={initialState} ref={ref}>
+      <StatusBar translucent={true} backgroundColor={theme.navigation.bg + 'cc'} barStyle="light-content" />
       <Tabs/>
+      {/* <MainNav/> */}
     </NavigationContainer>
   );
 }
@@ -341,5 +362,8 @@ function App() {
 export default function () {
   return <ReduxProvider store={store}>
     <App />
+    {/* <NavigationContainer independent={true}>
+      <Tabs />
+    </NavigationContainer> */}
   </ReduxProvider>
 }

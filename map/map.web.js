@@ -6,6 +6,7 @@ var Map = withScriptjs(withGoogleMap(function Map(props) {
       defaultZoom={2}
       defaultCenter={{ lat: 0, lng: 0 }}
       options={{
+        styles: props.mapStyles,
         streetViewControl:false,
         zoomControl:true,
         scaleControl:true,
@@ -25,6 +26,7 @@ var Map = withScriptjs(withGoogleMap(function Map(props) {
 export default function WebMap(props) {
   return (
     <Map
+      mapStyles={props.mapStyle}
       markers={props.markers}
       googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDenr1Ki2iRgz3vmXa70xhyRTmok2wwycE&v=3.exp&libraries=geometry,drawing,places"
       loadingElement={<div style={{ height: `100%` }} />}
