@@ -3,8 +3,10 @@ import { Button, Text, View, Vibration, Platform } from 'react-native';
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ToolsScreen({ navigation }) {
+  var nav = useNavigation();
   var [push,setPush] = React.useState(null);
   async function enableNotifications() {
     if (Constants.isDevice && Platform.OS !== "web") {
@@ -59,8 +61,8 @@ export default function ToolsScreen({ navigation }) {
     <View style={{ flex: 1, backgroundColor: '#c6e3b6', justifyContent: 'center', alignItems: 'center' }}>
       <Text>Tools Page</Text>
       <Button
-        title="Bouncers in Limbo"
-        onPress={sendNotification}
+        title="Test"
+        onPress={()=>nav.navigate('UserActivity',{userid:125914})}
       />
       <Button
         disabled={!push}

@@ -13,7 +13,8 @@ const defaultState = {
   tick: 0,
   code: '',
   dash: [],
-  clanLevelSelect: {}
+  clanLevelSelect: {},
+  route: {}
 };
 
 
@@ -27,6 +28,7 @@ var refresh = () => async (dispatch, getState) => {
   refreshRequests({dispatch,getState},true);
 }
 
+var setCurrentRoute = (data) => ({ type: "CURRENT_ROUTE", data: data })
 var login_ = (data) => ({ type: "LOGIN", data: data })
 var dash_ = (data) => ({ type: "DASH", data: data })
 var setCode_ = (data) => ({ type: "SET_CODE", data: data })
@@ -113,6 +115,11 @@ var rootReducer = (state = defaultState, action) => {
         ...state,
         dash: action.data
       }
+    case 'CURRENT_ROUTE':
+      return {
+        ...state,
+        route: action.data
+      }
     case 'LEVEL_SELECT':
       return {
         ...state,
@@ -151,4 +158,4 @@ AsyncStorage.getItem('LEVEL_SELECT').then((data)=>{
   store.dispatch(levelSelect(JSON.parse(data),true));
 })
 
-export default {store,refresh,login,setCode,dash,levelSelect};
+export default {store,refresh,login,setCode,dash,levelSelect,setCurrentRoute};

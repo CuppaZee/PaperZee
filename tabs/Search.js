@@ -20,7 +20,7 @@ export default function SearchScreen({ navigation }) {
   useFocusEffect(
     React.useCallback(() => {
       // console.log(input);
-      setTimeout(()=>input.current.focus(),100)
+      // setTimeout(()=>input.current.focus(),100)
     }, [])
   );
   function addClan(clan_id) {
