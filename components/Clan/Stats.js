@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, View, Image, ScrollView, Picker, FlatList, TouchableHighlight, Platform, ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { List } from 'react-native-paper';
+import { TouchableRipple } from 'react-native-paper';
 import request from '../../redux/request'
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -39,6 +39,7 @@ export default function UserActivityDash({ game_id, clan_id }) {
     border: '#000a'
   }
 
+  var [levelTable,setLevelTable] = React.useState(false);
   var nav = useNavigation();
   var date = new Date(Date.now() - (5 * 60 * 60000));
   var dateString = `${date.getUTCFullYear()}-${(date.getUTCMonth() + 1).toString().padStart(2, '0')}-${(date.getUTCDate()).toString().padStart(2, '0')}`
@@ -74,11 +75,18 @@ export default function UserActivityDash({ game_id, clan_id }) {
       if(level[user?"individual":"group"][requirement]) x = true;
       if(level[user?"individual":"group"][requirement] <= value || !level[user?"individual":"group"][requirement]) lvl = (lvl||0) + 1;
     }
+    if(levelTable && x) {
+      if(levelSelect+1 > lvl) {
+        return 0;
+      } else {
+        return levelSelect+1;
+      }
+    }
     return x?lvl:null;
   }
 
   function num(x="noauth",y) {
-    return Number(x)===0?(y?"-":"-"):x.toString();
+    return Number(x)<1?(y?"-":"-"):x.toString();
   }
 
   function calculateLevelT(user) {
@@ -94,6 +102,13 @@ export default function UserActivityDash({ game_id, clan_id }) {
         if(x) lev = Math.min(lev,(lvl||0));
       
       }
+      if(levelTable) {
+        if(levelSelect+1 > lev) {
+          return 0;
+        } else {
+          return levelSelect+1;
+        }
+      }
       return lev;
     } else {
       var lev = Infinity;
@@ -108,6 +123,13 @@ export default function UserActivityDash({ game_id, clan_id }) {
           if(level.group[requirement] <= clan?.requirements?.[requirement]?.total || !level.group[requirement]) lvl = (lvl||0) + 1;
         }
         if(x) lev = Math.min(lev,(lvl||0));
+      }
+      if(levelTable) {
+        if(levelSelect+1 > lev) {
+          return 0;
+        } else {
+          return levelSelect+1;
+        }
       }
       return lev;
     }
@@ -134,12 +156,20 @@ export default function UserActivityDash({ game_id, clan_id }) {
   return (
     // <View style={{ flex: 1, alignItems: "stretch", flexDirection: "column", backgroundColor: "#e9ffdc"??"#e6fcd9", borderRadius: 8 }}>
     <Card noPad>
-      <View style={{ backgroundColor: "#016930", paddingHorizontal: 8, borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>
-      <View style={{flex:1,paddingVertical:8}}>
+      <View style={{ backgroundColor: "#016930", paddingHorizontal: 8, borderTopLeftRadius: 8, borderTopRightRadius: 8, flexDirection: "row", alignItems: "center" }}>
+        <View style={{flex:1,paddingVertical:8}}>
+          <Text style={{ color: "white", fontWeight: "bold", fontSize: 12, opacity: 0.7, lineHeight: 12 }}>{clan?.details?.goal??'Shadow Clan'}{clan?.details?.goal&&' Goal'} - {levelTable?'Subtract View':'Total View'}</Text>
+          <Text style={{ color: "white", fontWeight: "bold", fontSize: 16, lineHeight: 16 }}>{clan?.details?.name}</Text>
+        </View>
+        <TouchableRipple style={{borderRadius:24,padding:4}} onPress={()=>{setLevelTable(!levelTable)}}>
+          <MaterialCommunityIcons name="plus-minus" size={24} color="white" />
+        </TouchableRipple>
+      </View>
+        {/* <View style={{flex:1,paddingVertical:8}}>
           <Text style={{ color: "white", fontWeight: "bold", fontSize: 12, opacity: 0.7, lineHeight: 12 }}>{clan?.details?.goal??'Shadow Clan'}</Text>
           <Text style={{ color: "white", fontWeight: "bold", fontSize: 16, lineHeight: 16 }}>{clan?.details?.name}</Text>
         </View>
-      </View>
+      </View> */}
       <View style={{flexDirection:"row"}}>
         <ScrollView horizontal={true} style={{flex:1}} contentContainerStyle={{flexDirection:"row",minWidth:'100%',paddingLeft:100}}>
           <View style={{flexDirection:"column",flexGrow:1,alignItems:"stretch",backgroundColor:level_colors.null}}>
@@ -158,10 +188,14 @@ export default function UserActivityDash({ game_id, clan_id }) {
                   }
                 </View>
                 {clan?.members?.map(u=><View style={{marginHorizontal:-1,height:24,padding:4,alignItems:"center",backgroundColor:level_colors[calculateLevel(true,clan.requirements?.[i]?.users?.[u.user_id],i)]}}>
-                  <Text style={{textAlign:"center",width:'100%',fontSize:12}}>{num(clan.requirements?.[i]?.users?.[u.user_id])}</Text>
+                  <Text style={{textAlign:"center",width:'100%',fontSize:12}}>
+                    {levelTable?num((data?.data?.levels?.[levelSelect]?.individual?.[i]||0) - clan.requirements?.[i]?.users?.[u.user_id]):num(clan.requirements?.[i]?.users?.[u.user_id])}
+                  </Text>
                 </View>)}
                 <View style={{borderTopWidth:2,borderTopColor:level_colors.border,marginHorizontal:-1,height:24,padding:4,alignItems:"center",backgroundColor:level_colors[calculateLevel(false,clan.requirements?.[i]?.total,i)]}}>
-                  <Text style={{textAlign:"center",width:'100%',fontSize:12}}>{clan.requirements?.[i]?.total}</Text>
+                  <Text style={{textAlign:"center",width:'100%',fontSize:12}}>
+                    {levelTable?num((data?.data?.levels?.[levelSelect]?.group?.[i]||0) - clan.requirements?.[i]?.total):num(clan.requirements?.[i]?.total)}
+                  </Text>
                 </View>
                 <View style={{marginHorizontal:-1,height:24,padding:4,alignItems:"center",backgroundColor:level_colors[levelSelect+1]}}>
                   <Text style={{textAlign:"center",width:'100%',fontSize:12}}>{num(data?.data?.levels?.[levelSelect]?.group?.[i]||0,true)}</Text>

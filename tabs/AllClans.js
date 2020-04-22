@@ -13,6 +13,7 @@ import s from '../redux';
 var { dash: dashR } = s;
 
 export default function AllClansScreen() {
+  var theme = useSelector(i=>i.themes[i.theme]);
   var allclans = [
     [1349, "The Cup of Coffee Clan"],
     [457, "The Cup of Tea Clan"],
@@ -48,7 +49,7 @@ export default function AllClansScreen() {
   return (
     <FlatList
       key={width}
-      style={{backgroundColor:'#b3dc9c'}}
+      style={{backgroundColor:theme.page.bg}}
       contentContainerStyle={{padding:4}}
       numColumns={width>800?2:1}
       data={[

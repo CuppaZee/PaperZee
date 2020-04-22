@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, Platform } from 'react-native';
 import {
   DrawerContentScrollView,
   DrawerItemList,
@@ -10,6 +10,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 export default function CustomDrawerContent(props) {
+  var theme = useSelector(i=>i.themes[i.theme]);
   var dash = useSelector(i=>i.dash);
   var users = useSelector(i=>Object.entries(i.logins));
   var route = useSelector(i=>i.route);
@@ -33,18 +34,26 @@ export default function CustomDrawerContent(props) {
   ];
   var pages = [
     {title:"Search",icon:"magnify",page:"Search"},
-    {title:"Maps",icon:"map", focused: true,page:"Map"},
+    {title:"Maps",icon:"map",page:"Map"},
     {title:"Tools",icon:"wrench",page:"Tools"},
-    {title:"Settings",icon:"settings",page:"Settings"}
-  ]
+    {title:"Scanner",icon:"qrcode",page:"Scanner",hide:Platform.OS==="web"}
+  ].filter(i=>!i.hide)
+  var more = [
+    {title:"Settings",icon:"settings",page:"Settings"},
+    {title:"Credits",icon:"heart",page:"Credits",disabled:true},
+    {title:"App Info",icon:"information",page:"App Info",disabled:true},
+    {title:"Donate",icon:"coin",page:"Donate",disabled:true}
+  ].filter(i=>!i.hide)
   return (
-    <DrawerContentScrollView {...props}>
-      {/* <View style={{paddingTop: 8, paddingLeft: 18}}>
-        <Text style={{fontSize:16,fontWeight:"bold",color:"#000a"}}>Tools</Text>
-      </View> */}
+    <DrawerContentScrollView style={{backgroundColor: theme.navigation.bg}} {...props}>
+      <View style={{paddingTop: 8, paddingLeft: 18}}>
+        <Text style={{fontSize:16,fontWeight:"bold",color:theme.navigation.fg}}>The menu design is likely to change. Feel free to send feedback.</Text>
+      </View>
       {pages.map?.(i=><DrawerItem
-        activeBackgroundColor="#016930"
-        activeTintColor="#ffffff"
+        key={i.title}
+        activeBackgroundColor={theme.navigation.fg}
+        activeTintColor={theme.navigation.bg}
+        inactiveTintColor={theme.navigation.fg}
         style={{marginVertical:0}}
         focused={route.name==i.page}
         icon={({ focused, color, size }) => <MaterialCommunityIcons name={i.icon} color={color} size={24} style={{marginRight: -24, marginLeft: 4, marginVertical: 4}} />}
@@ -57,15 +66,17 @@ export default function CustomDrawerContent(props) {
           })
         }
       />)}
-      <View style={{paddingTop: 8, paddingLeft: 18}}>
-        <Text style={{fontSize:16,fontWeight:"bold",color:"#000a"}}>Users</Text>
+      <View style={{paddingTop: 8, paddingBottom: 4, paddingLeft: 18}}>
+        <Text style={{fontSize:16,fontWeight:"bold",color:"#fffa"}}>Users</Text>
       </View>
       {users?.map?.(i=><DrawerItem
-        activeBackgroundColor="#016930"
-        activeTintColor="#ffffff"
+        key={`user_${i[0]}`}
+        activeBackgroundColor={theme.navigation.fg}
+        activeTintColor={theme.navigation.bg}
+        inactiveTintColor={theme.navigation.fg}
         style={{marginVertical:0}}
         icon={({ focused, color, size }) => <Image style={{height: 32, width: 32, marginRight: -28, borderRadius: 16}} source={{uri:`https://munzee.global.ssl.fastly.net/images/avatars/ua${Number(i[0]||0).toString(36)}.png`}} />}
-        label={i[1].username}
+        label={i[1].username||""}
         focused={route.name=="UserActivity"&&route.params?.userid==Number(i[0])}
         onPress={() => nav.reset({
             index: 1,
@@ -75,12 +86,13 @@ export default function CustomDrawerContent(props) {
           })
         }
       />)}
-      <View style={{paddingTop: 8, paddingLeft: 18}}>
-        <Text style={{fontSize:16,fontWeight:"bold",color:"#000a"}}>Clans</Text>
+      <View style={{paddingTop: 8, paddingBottom: 4, paddingLeft: 18}}>
+        <Text style={{fontSize:16,fontWeight:"bold",color:"#fffa"}}>Clans</Text>
       </View>
       <DrawerItem
-        activeBackgroundColor="#016930"
-        activeTintColor="#ffffff"
+        activeBackgroundColor={theme.navigation.fg}
+        activeTintColor={theme.navigation.bg}
+        inactiveTintColor={theme.navigation.fg}
         style={{marginVertical:0}}
         focused={route.name=="AllClans"}
         icon={({ focused, color, size }) => <MaterialCommunityIcons name="shield-half-full" color={color} size={24} style={{marginRight: -24, marginLeft: 4, marginVertical: 4}} />}
@@ -94,13 +106,35 @@ export default function CustomDrawerContent(props) {
         }
       />
       {dash?.map?.(i=><DrawerItem
-        activeBackgroundColor="#016930"
-        activeTintColor="#ffffff"
+        key={`clan_${i.clan_id}`}
+        activeBackgroundColor={theme.navigation.fg}
+        activeTintColor={theme.navigation.bg}
+        inactiveTintColor={theme.navigation.fg}
         style={{marginVertical:0, opacity: 0.6}}
         // focused={i.clan_id==1349}
         icon={({ focused, color, size }) => <Image style={{height: 32, width: 32, marginRight: -28, borderRadius: 16}} source={{uri:`https://munzee.global.ssl.fastly.net/images/clan_logos/${(i.clan_id||0).toString(36)}.png`}} />}
         label={(allclans.find(x=>x[0]==i.clan_id)||[0,i.clan_id||"?"])[1].toString()}
         onPress={() => {}}
+      />)}
+      <View style={{paddingTop: 8, paddingBottom: 4, paddingLeft: 18}}>
+        <Text style={{fontSize:16,fontWeight:"bold",color:"#fffa"}}>More</Text>
+      </View>
+      {more.map?.(i=><DrawerItem
+        key={i.title}
+        activeBackgroundColor={theme.navigation.fg}
+        activeTintColor={theme.navigation.bg}
+        inactiveTintColor={theme.navigation.fg}
+        style={{marginVertical:0,opacity: i.disabled?0.6:1}}
+        focused={route.name==i.page}
+        icon={({ focused, color, size }) => <MaterialCommunityIcons name={i.icon} color={color} size={24} style={{marginRight: -24, marginLeft: 4, marginVertical: 4}} />}
+        label={i.title}
+        onPress={i.disabled?null:() => nav.reset({
+            index: 1,
+            routes: [
+              { name: '__primary', params: {screen: i.page} },
+            ],
+          })
+        }
       />)}
       {/* <DrawerItemList activeBackgroundColor="#016930" activeTintColor="#ffffff" itemStyle={{marginVertical:0}} {...props} /> */}
     </DrawerContentScrollView>

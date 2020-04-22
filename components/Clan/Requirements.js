@@ -20,6 +20,7 @@ var count = (array, t) => {
 }
 
 export default function UserActivityDash({ game_id }) {
+  var theme = useSelector(i=>i.themes[i.theme]);
   var [reward,setReward] = React.useState(false);
   var level_colors = {
     // ind: "#f9e270",
@@ -58,7 +59,7 @@ export default function UserActivityDash({ game_id }) {
       return (
         <Card>
           <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-            <ActivityIndicator size="large" color="#000" />
+            <ActivityIndicator size="large" color={theme.page_content.fg} />
           </View>
         </Card>
       )
@@ -75,13 +76,13 @@ export default function UserActivityDash({ game_id }) {
   return (
     // <View style={{ flex: 1, alignItems: "stretch", flexDirection: "column", backgroundColor: "#e9ffdc"??"#e6fcd9", borderRadius: 8 }}>
     <Card noPad>
-      <View style={{ backgroundColor: "#016930", paddingHorizontal: 8, borderTopLeftRadius: 8, borderTopRightRadius: 8, flexDirection: "row", alignItems: "center" }}>
+      <View style={{ backgroundColor: theme.navigation.bg, paddingHorizontal: 8, borderTopLeftRadius: 8, borderTopRightRadius: 8, flexDirection: "row", alignItems: "center" }}>
         <View style={{flex:1,paddingVertical:8}}>
-          <Text style={{ color: "white", fontWeight: "bold", fontSize: 12, opacity: 0.7, lineHeight: 12 }}>{data?.data?.battle.title.slice(10)}</Text>
-          <Text style={{ color: "white", fontWeight: "bold", fontSize: 16, lineHeight: 16 }}>{reward?'Rewards':'Requirements'}</Text>
+          <Text style={{ color: theme.navigation.fg, fontWeight: "bold", fontSize: 12, opacity: 0.7, lineHeight: 12 }}>{data?.data?.battle.title.slice(10)}</Text>
+          <Text style={{ color: theme.navigation.fg, fontWeight: "bold", fontSize: 16, lineHeight: 16 }}>{reward?'Rewards':'Requirements'}</Text>
         </View>
         <TouchableRipple style={{borderRadius:24,padding:4}} onPress={()=>{setReward(!reward)}}>
-          <MaterialCommunityIcons name="gift" size={24} color="#fff" />
+          <MaterialCommunityIcons name="gift" size={24} color={theme.navigation.fg} />
         </TouchableRipple>
       </View>
       <View style={{flexDirection:"row"}}>
