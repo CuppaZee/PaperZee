@@ -1,3 +1,5 @@
+# This repository is no longer used. Please see our new [monorepo](https://github.com/CuppaZee/CuppaZee)
+
 # CuppaZee Client
 The Next-Generation CuppaZee Client, written in JavaScript with React Native and [Expo](https://expo.io/).
 
