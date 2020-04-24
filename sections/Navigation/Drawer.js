@@ -8,8 +8,10 @@ import {
 import { useSelector } from 'react-redux';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 export default function CustomDrawerContent(props) {
+  var {t} = useTranslation();
   var theme = useSelector(i=>i.themes[i.theme]);
   var dash = useSelector(i=>i.dash);
   var users = useSelector(i=>Object.entries(i.logins));
@@ -33,14 +35,14 @@ export default function CustomDrawerContent(props) {
     [19, "Maryland Munzee Militia (HC)"]
   ];
   var pages = [
-    {title:"Search",icon:"magnify",page:"Search"},
-    {title:"Maps",icon:"map",page:"Map"},
-    {title:"Tools",icon:"wrench",page:"Tools"},
-    {title:"Scanner",icon:"qrcode",page:"Scanner",hide:Platform.OS==="web"}
+    {title:t(`common:search`),icon:"magnify",page:"Search"},
+    {title:t(`common:maps`),icon:"map",page:"Map"},
+    {title:t(`common:tools`),icon:"wrench",page:"Tools"},
+    {title:t(`common:scanner`),icon:"qrcode",page:"Scanner",hide:Platform.OS==="web"}
   ].filter(i=>!i.hide)
   var more = [
     {title:"La Quête",icon:"run",page:"LaQuest",disabled:true},
-    {title:"Settings",icon:"settings",page:"Settings"},
+    {title:t(`common:settings`),icon:"settings",page:"Settings"},
     {title:"Credits",icon:"heart",page:"Credits",disabled:true},
     {title:"App Info",icon:"information",page:"App Info",disabled:true},
     {title:"Donate",icon:"coin",page:"Donate",disabled:true}
@@ -147,7 +149,7 @@ export default function CustomDrawerContent(props) {
         }
       />)}
       <View style={{paddingTop: 8, paddingLeft: 18, paddingBottom: 8}}>
-        <Text style={{fontSize:12,fontWeight:"bold",opacity: 0.7,color:theme.navigation.fg}}>CuppaZee App Build 3</Text>
+        <Text style={{fontSize:12,fontWeight:"bold",opacity: 0.7,color:theme.navigation.fg}}>CuppaZee App Build 4</Text>
       </View>
       {/* <DrawerItemList activeBackgroundColor="#016930" activeTintColor="#ffffff" itemStyle={{marginVertical:0}} {...props} /> */}
     </DrawerContentScrollView>

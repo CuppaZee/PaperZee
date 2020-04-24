@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Button, Text, View, Platform, Image, Dimensions } from 'react-native';
+import { Button, Text, View, Platform, Image } from 'react-native';
 import { useDimensions } from '@react-native-community/hooks'
 import { useSelector, useDispatch } from "react-redux";
-import Card from '../components/Card';
-import s from "../redux";
+import Card from '../Shared/Card';
+import s from "~store";
 var { setTheme } = s;
 
 function forceReload() {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, ScrollView } from 'react-native';
-import ClanRequirements from '../components/Clan/Requirements';
-import ClanStats from '../components/Clan/Stats';
+import ClanRequirements from './Cards/Requirements';
+import ClanStats from './Cards/Stats';
 import { useSelector } from 'react-redux';
 
 export default function ClanScreen({route}) {

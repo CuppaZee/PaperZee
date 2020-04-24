@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, Text, View, Platform } from 'react-native';
 // import MapView from 'react-native-maps';
 // var MapView;
-import MapView from '../map/map'
+import MapView from './MapView'
 import { useSelector } from "react-redux"
 
 export default function MapScreen({ navigation }) {

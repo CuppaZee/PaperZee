@@ -2,7 +2,7 @@ import React from "react";
 import { ActivityIndicator, View } from "react-native"
 import { IconButton } from "react-native-paper"
 import {useDispatch,useSelector} from "react-redux";
-import r from "./redux/index";
+import r from "~store/index";
 
 export default function () {
   var dispatch = useDispatch();

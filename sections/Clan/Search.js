@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Button, Text, View, TextInput, Image, ScrollView } from 'react-native';
-import Card from '../components/Card';
+import Card from '~sections/Shared/Card';
 import { useFocusEffect } from '@react-navigation/native';
 import { IconButton } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDimensions } from '@react-native-community/hooks'
-import request from '../redux/request';
-import s from '../redux';
+import request from '~store/request';
+import s from '~store';
 var { dash } = s;
 
 export default function SearchScreen({ navigation }) {

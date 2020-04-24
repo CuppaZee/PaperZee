@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Text, View, Image, ScrollView, Picker, FlatList, TouchableHighlight, Platform, ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { TouchableRipple, Menu } from 'react-native-paper';
-import request from '../../redux/request'
+import request from '~store/request'
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import Card from '../Card';
-import s from '../../redux';
+import Card from '~sections/Shared/Card';
+import s from '~store';
 var { levelSelect: levelSelectX } = s
 
 var countup = (t) => (a, b) => {

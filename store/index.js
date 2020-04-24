@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import r from './request';
 import { AsyncStorage } from 'react-native';
-import darkMapStyle from './darkMapStyle.json'
+import themes from '../themes'
 var {makeRequest} = r;
 const defaultState = {
   requests: [],
@@ -16,143 +16,8 @@ const defaultState = {
   dash: [],
   clanLevelSelect: {},
   route: {},
-  themes: {
-    xdark: {
-      error: {
-        bg: '#660000',
-        fg: '#ffffff'
-      },
-      navigation: {
-        // bg: "#232323",
-        bg: "#000000",
-        fg: "#ffffff"
-      },
-      page: {
-        // bg: "#121212",
-        bg: "#000000",
-        fg: "#ffffff"
-      },
-      page_content: {
-        bg: "#000000",
-        fg: "#d3d3d3",
-        border: "#ffffff"
-      },
-      activity: {
-        capture: {
-          bg: "#004400",
-          fg: "#aaffaa"
-        },
-        deploy: {
-          bg: "#00403e",
-          fg: "#a5fffc"
-        },
-        capon: {
-          bg: "#401700",
-          fg: "#ffbcad"
-        }
-      },
-      mapStyle: darkMapStyle
-    },
-    dark: {
-      error: {
-        bg: '#aa0000',
-        fg: '#ffffff'
-      },
-      navigation: {
-        bg: "#121212",
-        fg: "#ffffff"
-      },
-      page: {
-        bg: "#232323",
-        fg: "#ffffff"
-      },
-      page_content: {
-        bg: "#343434",
-        fg: "#d3d3d3",
-        border: "#ffffff"
-      },
-      activity: {
-        capture: {
-          bg: "#004400",
-          fg: "#aaffaa"
-        },
-        deploy: {
-          bg: "#00403e",
-          fg: "#a5fffc"
-        },
-        capon: {
-          bg: "#401700",
-          fg: "#ffbcad"
-        }
-      },
-      mapStyle: darkMapStyle
-    },
-    light: {
-      error: {
-        bg: '#ffaaaa',
-        fg: '#000000'
-      },
-      navigation: {
-        bg: "#016930",
-        fg: "#ffffff"
-      },
-      page: {
-        bg: "#c6e3b6",
-        fg: "#000000"
-      },
-      page_content: {
-        bg: "#e6fcd9",
-        fg: "#000000"
-      },
-      activity: {
-        capture: {
-          bg: "#aaffaa",
-          fg: "#004400"
-        },
-        deploy: {
-          bg: "#a5fffc",
-          fg: "#00403e"
-        },
-        capon: {
-          bg: "#ffbcad",
-          fg: "#401700"
-        }
-      }
-    },
-    hcontrast: {
-      error: {
-        bg: '#ffaaaa',
-        fg: '#000000'
-      },
-      navigation: {
-        bg: "#00642D",
-        fg: "#ffffff"
-      },
-      page: {
-        bg: "#c6e3b6",
-        fg: "#000000"
-      },
-      page_content: {
-        bg: "#ffffff",
-        fg: "#000000"
-      },
-      activity: {
-        capture: {
-          bg: "#aaffaa",
-          fg: "#004400"
-        },
-        deploy: {
-          bg: "#a5fffc",
-          fg: "#00403e"
-        },
-        capon: {
-          bg: "#ffbcad",
-          fg: "#401700"
-        }
-      }
-    }
-  },
-  theme: "light"
+  themes,
+  theme: themes._default
 };
 
 

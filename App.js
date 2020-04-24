@@ -1,27 +1,34 @@
 import * as React from 'react';
 import { NavigationContainer, useLinking, useNavigation } from '@react-navigation/native';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Provider as ReduxProvider, useSelector, useDispatch } from 'react-redux';
-import s from './redux/index'
-import lang from './lang/index'
+import s from '~store/index';
+import './lang/i18n';
 var { store, login, setCurrentRoute } = s;
 
-// import DashScreen from './tabs/Dash';
-import AllClansScreen from './tabs/AllClans';
-import ClanScreen from './tabs/Clan';
-import ScannerScreen from './tabs/Scanner';
-import SettingsScreen from './tabs/Settings';
-import ToolsScreen from './tabs/Tools';
-import MapScreen from './tabs/Map';
-import SearchScreen from './tabs/Search';
+// Clan Screens
+import AllClansScreen from './sections/Clan/All';
+import ClanDetailsScreen from './sections/Clan/Details';
+import ClanSearchScreen from './sections/Clan/Search';
 
-import UserActivityScreen from './pages/User/Activity';
-import UserInventoryScreen from './pages/User/Inventory';
+// Scanner Screens
+import ScannerScreen from './sections/Scanner/Home';
 
-import MunzeeDetailsScreen from './pages/Munzee/Details/Page';
+// Settings Screens
+import SettingsScreen from './sections/Settings/Home';
+
+// Tools Screens
+import ToolsScreen from './sections/Tools/Home';
+
+// Maps Screens
+import MapScreen from './sections/Maps/Home';
+
+// User Screens
+import UserActivityScreen from './sections/User/Activity';
+
+// Navigation Sections
+import DrawerContent from './sections/Navigation/Drawer';
 
 import { Platform, View, Text, StatusBar } from 'react-native';
 import { IconButton, ActivityIndicator, Provider as PaperProvider } from 'react-native-paper'
@@ -29,10 +36,8 @@ import LoadingButton from './LoadingButton';
 import WebView from 'react-native-webview';
 import { Linking } from 'expo';
 
-import DrawerContent from './Drawer';
 import { useDimensions } from '@react-native-community/hooks';
 
-// const Tab = createMaterialBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
 const Stack = createStackNavigator();
@@ -102,7 +107,7 @@ function AuthSuccessScreen(props) {
   return <Text>...</Text>
 }
 
-function MainNav () {
+function StackNav () {
   var { width } = useDimensions().window;
   const loggedIn = useSelector(i=>i.loggedIn);
   const theme = useSelector(i=>i.themes[i.theme]);
@@ -134,11 +139,6 @@ function MainNav () {
               color="#fff"
               icon="arrow-left"
             />}
-            {/* {(route.name == "Home" || !navigation.canGoBack()) ? null : <IconButton
-              onPress={() => navigation.replace('Home')}
-              color="#fff"
-              icon="home"
-            />} */}
             <LoadingButton />
           </View>
         )
@@ -152,7 +152,7 @@ function MainNav () {
       />
       <Stack.Screen
         name="Search"
-        component={SearchScreen}
+        component={ClanSearchScreen}
       />
       <Stack.Screen
         name="Map"
@@ -172,39 +172,21 @@ function MainNav () {
       />
       <Stack.Screen
         name="AllClans"
+        options={{
+          title: 'All Clans',
+        }}
         component={AllClansScreen}
       />
       <Stack.Screen
         name="Clan"
-        component={ClanScreen}
+        component={ClanDetailsScreen}
       />
-      {/* <Stack.Screen
-        name="Home"
-        options={{
-          title: "Hello",
-        }}
-        // component={Tabs}
-      /> */}
       <Stack.Screen
         name="UserActivity"
         options={{
           title: 'User Activity',
         }}
         component={UserActivityScreen}
-      />
-      <Stack.Screen
-        name="UserInventory"
-        options={{
-          title: 'User Inventory',
-        }}
-        component={UserInventoryScreen}
-      />
-      <Stack.Screen
-        name="MunzeeDetails"
-        options={{
-          title: 'Munzee Details',
-        }}
-        component={MunzeeDetailsScreen}
       />
     </>}
     <Stack.Screen
@@ -222,7 +204,7 @@ function MainNav () {
   </Stack.Navigator>
 }
 
-function Tabs() {
+function DrawerNav() {
   var { width } = useDimensions().window;
   return <Drawer.Navigator
     drawerStyle={{width:width>500?240:width}}
@@ -234,59 +216,8 @@ function Tabs() {
     <Drawer.Screen
       name="__primary"
       label="__primary"
-      component={MainNav}
-      // component={App}
+      component={StackNav}
     />
-    {/* <Drawer.Screen
-      name="Dash"
-      component={DashScreen}
-      options={{
-        tabBarLabel: 'Home',
-        tabBarIcon: ({ color }) => (
-          <MaterialCommunityIcons name="home" color={color} size={24} />
-        ),
-      }}
-    />
-    <Drawer.Screen
-      name="Search"
-      component={SearchScreen}
-      options={{
-        tabBarLabel: "Search",
-        tabBarIcon: ({ color }) => (
-          <MaterialCommunityIcons name="magnify" color={color} size={24} />
-        ),
-      }}
-    />
-    <Drawer.Screen
-      name="Map"
-      component={MapScreen}
-      options={{
-        tabBarLabel: 'Map',
-        tabBarIcon: ({ color }) => (
-          <MaterialCommunityIcons name="map" color={color} size={24} />
-        ),
-      }}
-    />
-    <Drawer.Screen
-      name="Tools"
-      component={ToolsScreen}
-      options={{
-        tabBarLabel: 'Tools',
-        tabBarIcon: ({ color }) => (
-          <MaterialCommunityIcons name="wrench" color={color} size={24} />
-        ),
-      }}
-    />
-    <Drawer.Screen
-      name="Settings"
-      component={SettingsScreen}
-      options={{
-        tabBarLabel: "Settings",
-        tabBarIcon: ({ color }) => (
-          <MaterialCommunityIcons name="settings" color={color} size={24} />
-        ),
-      }}
-    /> */}
   </Drawer.Navigator>
 }
 
@@ -364,19 +295,15 @@ function App() {
   return (
     <NavigationContainer independent={true} onStateChange={handleStateChange} initialState={initialState} ref={ref}>
       <StatusBar translucent={true} backgroundColor={theme.navigation.bg + 'cc'} barStyle="light-content" />
-      <Tabs/>
-      {/* <MainNav/> */}
+      <DrawerNav/>
     </NavigationContainer>
   );
 }
 
-export default function () {
+export default function () { // Setup Providers
   return <ReduxProvider store={store}>
     <PaperProvider>
       <App />
-      {/* <NavigationContainer independent={true}>
-        <Tabs />
-      </NavigationContainer> */}
     </PaperProvider>
   </ReduxProvider>
 }

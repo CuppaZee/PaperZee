@@ -1,15 +1,11 @@
 import * as React from 'react';
-import { Button, Text, View, ScrollView, FlatList } from 'react-native';
-import UserActivityDash from '../pages/User/Dash';
-import ClanGroupDash from '../pages/Clan/Group/Dash';
-import ClanRequirements from '../components/Clan/Requirements';
-import ClanStats from '../components/Clan/Stats';
+import { Text, View, FlatList } from 'react-native';
+import ClanRequirements from './Cards/Requirements';
+import ClanStats from './Cards/Stats';
 import { useDimensions } from '@react-native-community/hooks'
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import { TouchableHighlight } from 'react-native-gesture-handler';
-import Card from '../components/Card';
-import s from '../redux';
+import Card from '~sections/Shared/Card';
+import s from '~store';
 var { dash: dashR } = s;
 
 export default function AllClansScreen() {
@@ -31,18 +27,9 @@ export default function AllClansScreen() {
     [19, "Maryland Munzee Militia (HC)"]
   ];
   var { width } = useDimensions().window;
-  var nav = useNavigation();
-  var users = useSelector(i => Object.keys(i.logins));
   var dash = useSelector(i => i.dash);
   var dispatch = useDispatch();
   var [edit, setEdit] = React.useState(false);
-
-  function add(clan) {
-    dispatch(dashR(dash.concat([{
-      type: "clan_stats",
-      clan_id: clan
-    }])));
-  }
   function remove(clan) {
     dispatch(dashR(dash.filter(i => i.clan_id != clan)));
   }

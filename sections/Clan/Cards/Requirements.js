@@ -2,10 +2,10 @@ import * as React from 'react';
 import { Text, View, Image, ScrollView, FlatList, TouchableHighlight, Platform, ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { List, IconButton, TouchableRipple } from 'react-native-paper';
-import request from '../../redux/request'
+import request from '~store/request'
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import Card from '../Card';
+import Card from '~sections/Shared/Card';
 
 var countup = (t) => (a, b) => {
   a[b[t]] = (a[b[t]] || 0) + 1;

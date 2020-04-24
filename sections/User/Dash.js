@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text, View, Image, ScrollView, FlatList, TouchableHighlight, ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { List, TouchableRipple } from 'react-native-paper';
-import request from '../../redux/request'
+import request from '../../store/request'
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import Card from '../../components/Card';
