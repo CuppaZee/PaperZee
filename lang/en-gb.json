@@ -6,7 +6,14 @@
         "tools": "Tools",
         "settings": "Settings",
         "authenticate": "Authenticate",
-        "auth_success": "Authentication Successful"
+        "auth_success": "Authentication Successful",
+        "scanner": "Scanner",
+        "the_quest": "The Quest",
+        "maps": "Maps",
+        "credits": "Credits",
+        "app_info": "App Info",
+        "donate": "Donate",
+        "build_info": "CuppaZee App Build {n}"
     },
     "activity": {
         "user_captured": "{user} captured",
@@ -35,6 +42,7 @@
             "one": "{count} Point",
             "other": "{count} Points"
         },
-        "none": "None"
+        "none": "None",
+        "user_today": "{user} Today"
     }
 }
