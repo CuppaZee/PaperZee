@@ -32,7 +32,7 @@ import DrawerContent from './sections/Navigation/Drawer';
 
 import { Platform, View, Text, StatusBar } from 'react-native';
 import { IconButton, ActivityIndicator, Provider as PaperProvider } from 'react-native-paper'
-import LoadingButton from './LoadingButton';
+import LoadingButton from './sections/Navigation/LoadingButton';
 import WebView from 'react-native-webview';
 import { Linking } from 'expo';
 
