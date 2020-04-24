@@ -1,43 +1,53 @@
 {
     "common": {
-        "dashboard": "",
-        "search": "",
-        "map": "",
-        "tools": "",
-        "settings": ""
+        "dashboard": "Domů",
+        "search": "Hledat",
+        "map": "Mapa",
+        "tools": "Nástroje",
+        "settings": "Nastavení",
+        "authenticate": "Přihlásit se",
+        "auth_success": "Přihlášení úspěšné",
+        "scanner": "",
+        "the_quest": "",
+        "maps": "",
+        "credits": "",
+        "app_info": "",
+        "donate": "",
+        "build_info": ""
     },
     "activity": {
-        "user_captured": "",
-        "user_deployed": "",
-        "you_captured": "",
-        "you_deployed": "",
-        "by_user": "",
-        "by_you": "",
+        "user_captured": "{user} zachytil",
+        "user_deployed": "{user} umístil",
+        "you_captured": "Zachytil jste",
+        "you_deployed": "Umístil jste",
+        "by_user": "uživatelem {user}",
+        "by_you": "vámi",
         "total_point": {
-            "one": "",
-            "few": "",
-            "other": ""
+            "one": "{count} bod dohromady",
+            "few": "{count} body dohromady",
+            "other": "{count} bodů dohromady"
         },
         "capture": {
-            "one": "",
-            "few": "",
-            "other": ""
+            "one": "{count} zachycení",
+            "few": "{count} zachycení",
+            "other": "{count} zachycení"
         },
         "deploy": {
-            "one": "",
-            "few": "",
-            "other": ""
+            "one": "{count} umístění",
+            "few": "{count} umístění",
+            "other": "{count} umístění"
         },
         "capon": {
-            "one": "",
-            "few": "",
-            "other": ""
+            "one": "{count} zachycení vlastní",
+            "few": "{count} zachycení vlastních",
+            "other": "{count} zachycení vlastních"
         },
         "point": {
-            "one": "",
-            "few": "",
-            "other": ""
+            "one": "{count} bod",
+            "few": "{count} body",
+            "other": "{count} bodů"
         },
-        "none": ""
+        "none": "Nic",
+        "user_today": "{user} dnes"
     }
 }

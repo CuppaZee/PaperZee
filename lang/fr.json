@@ -6,7 +6,14 @@
         "tools": "Outils",
         "settings": "Paramètres",
         "authenticate": "s'authentifier",
-        "auth_success": ""
+        "auth_success": "",
+        "scanner": "",
+        "the_quest": "",
+        "maps": "",
+        "credits": "",
+        "app_info": "",
+        "donate": "",
+        "build_info": ""
     },
     "activity": {
         "user_captured": "Captures {user}",
@@ -35,6 +42,7 @@
             "one": "{count} Point",
             "other": "{count} Points"
         },
-        "none": "Aucun"
+        "none": "Aucun",
+        "user_today": ""
     }
 }

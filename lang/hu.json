@@ -6,7 +6,14 @@
         "tools": "Eszközök",
         "settings": "Beállítások",
         "authenticate": "Hitelesítés",
-        "auth_success": "Sikeres hitelesítés"
+        "auth_success": "Sikeres hitelesítés",
+        "scanner": "",
+        "the_quest": "",
+        "maps": "",
+        "credits": "",
+        "app_info": "",
+        "donate": "",
+        "build_info": ""
     },
     "activity": {
         "user_captured": "{user} megtalálta",
@@ -35,6 +42,7 @@
             "one": "{count} Pont",
             "other": "{count} Pont"
         },
-        "none": "Nincs"
+        "none": "Nincs",
+        "user_today": "Ma"
     }
 }

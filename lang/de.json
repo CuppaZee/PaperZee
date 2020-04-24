@@ -4,7 +4,16 @@
         "search": "",
         "map": "",
         "tools": "",
-        "settings": ""
+        "settings": "",
+        "authenticate": "",
+        "auth_success": "",
+        "scanner": "",
+        "the_quest": "",
+        "maps": "",
+        "credits": "",
+        "app_info": "",
+        "donate": "",
+        "build_info": ""
     },
     "activity": {
         "user_captured": "",
@@ -33,6 +42,7 @@
             "one": "",
             "other": ""
         },
-        "none": ""
+        "none": "",
+        "user_today": ""
     }
 }
