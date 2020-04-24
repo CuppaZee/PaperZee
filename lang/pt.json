@@ -6,7 +6,14 @@
         "tools": "Ferramentas",
         "settings": "Configurações",
         "authenticate": "",
-        "auth_success": ""
+        "auth_success": "",
+        "scanner": "",
+        "the_quest": "",
+        "maps": "",
+        "credits": "",
+        "app_info": "",
+        "donate": "",
+        "build_info": ""
     },
     "activity": {
         "user_captured": "{user} Capturado",
@@ -35,6 +42,7 @@
             "one": "{count} Ponto",
             "other": "{count} Pontos"
         },
-        "none": "Nenhum"
+        "none": "Nenhum",
+        "user_today": ""
     }
 }
