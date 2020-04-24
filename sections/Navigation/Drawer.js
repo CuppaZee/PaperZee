@@ -41,11 +41,11 @@ export default function CustomDrawerContent(props) {
     {title:t(`common:scanner`),icon:"qrcode",page:"Scanner",hide:Platform.OS==="web"}
   ].filter(i=>!i.hide)
   var more = [
-    {title:"La Quête",icon:"run",page:"LaQuest",disabled:true},
+    {title:t(`common:the_quest`),icon:"run",page:"LaQuest",disabled:true},
     {title:t(`common:settings`),icon:"settings",page:"Settings"},
-    {title:"Credits",icon:"heart",page:"Credits",disabled:true},
-    {title:"App Info",icon:"information",page:"App Info",disabled:true},
-    {title:"Donate",icon:"coin",page:"Donate",disabled:true}
+    {title:t(`common:credits`),icon:"heart",page:"Credits",disabled:true},
+    {title:t(`common:app_info`),icon:"information",page:"App Info",disabled:true},
+    {title:t(`common:donate`),icon:"coin",page:"Donate",disabled:true}
   ].filter(i=>!i.hide)
   return (
     <DrawerContentScrollView style={{backgroundColor: theme.navigation.bg}} {...props}>
@@ -129,7 +129,7 @@ export default function CustomDrawerContent(props) {
         }
       />
       <View style={{paddingTop: 8, paddingBottom: 4, paddingLeft: 18}}>
-        <Text style={{fontSize:16,fontWeight:"bold",color:"#fffa"}}>More</Text>
+        <Text style={{fontSize:16,fontWeight:"bold",color:"#fffa"}}>{t('common:more')}</Text>
       </View>
       {more.map?.(i=><DrawerItem
         key={i.title}
@@ -149,7 +149,7 @@ export default function CustomDrawerContent(props) {
         }
       />)}
       <View style={{paddingTop: 8, paddingLeft: 18, paddingBottom: 8}}>
-        <Text style={{fontSize:12,fontWeight:"bold",opacity: 0.7,color:theme.navigation.fg}}>CuppaZee App Build 4</Text>
+        <Text style={{fontSize:12,fontWeight:"bold",opacity: 0.7,color:theme.navigation.fg}}>{t('common:build_info',{count:4})}</Text>
       </View>
       {/* <DrawerItemList activeBackgroundColor="#016930" activeTintColor="#ffffff" itemStyle={{marginVertical:0}} {...props} /> */}
     </DrawerContentScrollView>

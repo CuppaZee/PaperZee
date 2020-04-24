@@ -20,7 +20,7 @@ function x(obj, key){
         for(var i = 0;i < Object.keys(obj).length;i++) {
             let k = Object.keys(obj)[i];
             if(typeof obj[k] == "string") {
-                a[key][k] = obj[k];
+                if(obj[k]) a[key][k] = obj[k].replace(/{([a-z0-9_]+)}/g,'{{$1}}');
             } else {
                 Object.assign(a[key],x(obj[k],k))
             }
