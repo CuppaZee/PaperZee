@@ -58,8 +58,8 @@ export default function AllClansScreen() {
           i.key=i.clan_id;
           return i;
         }),
-        {type:"blankHack"},
-        {type:"edit",edit:edit}
+        {type:"edit",key:"edit",edit:edit},
+        {type:"blankHack",key:"blankHack"},
       ]}
       renderItem={({ item }) => ({
         clan_stats:<View style={{ padding: 4, flex: 1 }}>
@@ -69,25 +69,25 @@ export default function AllClansScreen() {
           <ClanRequirements game_id={85} />
         </View>,
         blankHack:<View style={{flex:1,padding:4}}></View>,
-        edit: <View style={{flexDirection:"column"}}>{edit&&<>
+        edit: <View style={{flexDirection:"column",flex:1,padding:4}}>{edit&&<>
               <View style={{width:"100%",height:20}}></View>
               {dash.filter(i=>i.type=="clan_stats").map(i=><View style={{padding:4}}>
                 <Card onPress={()=>remove(i.clan_id)}>
-                  <Text style={{fontSize:20,fontWeight:"bold"}}>Remove "{(allclans.find(x=>x[0]==i.clan_id)||[])[1]||`ID #${i.clan_id}`}"</Text>
+                  <Text style={{fontSize:20,fontWeight:"bold",color:theme.page_content.fg}}>Remove "{(allclans.find(x=>x[0]==i.clan_id)||[])[1]||`ID #${i.clan_id}`}"</Text>
                 </Card>
               </View>)}
               <View style={{width:"100%",height:20}}></View>
     
               <View style={{padding:4}}>
                 <Card>
-                  <Text style={{fontSize:20,fontWeight:"bold"}}>Clans can now be added from the Search page.</Text>
+                  <Text style={{fontSize:20,fontWeight:"bold",color:theme.page_content.fg}}>Clans can now be added from the Search page.</Text>
                 </Card>
               </View>
               <View style={{width:"100%",height:20}}></View>
             </>}
             <View style={{padding:4}}>
               <Card onPress={()=>setEdit(!edit)}>
-                <Text style={{fontSize:20,fontWeight:"bold"}}>{edit?'Finish Editing':'Edit'} Clan List</Text>
+                <Text style={{fontSize:20,fontWeight:"bold",color:theme.page_content.fg}}>{edit?'Finish Editing':'Edit'} Clan List</Text>
               </Card>
             </View></View>
       }[item.type])}

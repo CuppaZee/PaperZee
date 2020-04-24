@@ -11,6 +11,7 @@ var { store, login, setCurrentRoute } = s;
 
 // import DashScreen from './tabs/Dash';
 import AllClansScreen from './tabs/AllClans';
+import ClanScreen from './tabs/Clan';
 import ScannerScreen from './tabs/Scanner';
 import SettingsScreen from './tabs/Settings';
 import ToolsScreen from './tabs/Tools';
@@ -23,7 +24,7 @@ import UserInventoryScreen from './pages/User/Inventory';
 import MunzeeDetailsScreen from './pages/Munzee/Details/Page';
 
 import { Platform, View, Text, StatusBar } from 'react-native';
-import { IconButton, ActivityIndicator } from 'react-native-paper'
+import { IconButton, ActivityIndicator, Provider as PaperProvider } from 'react-native-paper'
 import LoadingButton from './LoadingButton';
 import WebView from 'react-native-webview';
 import { Linking } from 'expo';
@@ -173,6 +174,10 @@ function MainNav () {
         name="AllClans"
         component={AllClansScreen}
       />
+      <Stack.Screen
+        name="Clan"
+        component={ClanScreen}
+      />
       {/* <Stack.Screen
         name="Home"
         options={{
@@ -302,6 +307,12 @@ function App() {
           Scanner: 'scanner',
           Settings: 'settings',
           AllClans: 'clans/list',
+          Clan: {
+            path: 'clan/:clanid',
+            parse: {
+              clanid: Number
+            }
+          },
           UserActivity: {
             path: 'user/:userid/activity',
             parse: {
@@ -361,9 +372,11 @@ function App() {
 
 export default function () {
   return <ReduxProvider store={store}>
-    <App />
-    {/* <NavigationContainer independent={true}>
-      <Tabs />
-    </NavigationContainer> */}
+    <PaperProvider>
+      <App />
+      {/* <NavigationContainer independent={true}>
+        <Tabs />
+      </NavigationContainer> */}
+    </PaperProvider>
   </ReduxProvider>
 }

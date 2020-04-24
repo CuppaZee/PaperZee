@@ -18,6 +18,10 @@ const defaultState = {
   route: {},
   themes: {
     xdark: {
+      error: {
+        bg: '#660000',
+        fg: '#ffffff'
+      },
       navigation: {
         // bg: "#232323",
         bg: "#000000",
@@ -50,6 +54,10 @@ const defaultState = {
       mapStyle: darkMapStyle
     },
     dark: {
+      error: {
+        bg: '#aa0000',
+        fg: '#ffffff'
+      },
       navigation: {
         bg: "#121212",
         fg: "#ffffff"
@@ -60,7 +68,8 @@ const defaultState = {
       },
       page_content: {
         bg: "#343434",
-        fg: "#d3d3d3"
+        fg: "#d3d3d3",
+        border: "#ffffff"
       },
       activity: {
         capture: {
@@ -79,6 +88,10 @@ const defaultState = {
       mapStyle: darkMapStyle
     },
     light: {
+      error: {
+        bg: '#ffaaaa',
+        fg: '#000000'
+      },
       navigation: {
         bg: "#016930",
         fg: "#ffffff"
@@ -107,6 +120,10 @@ const defaultState = {
       }
     },
     hcontrast: {
+      error: {
+        bg: '#ffaaaa',
+        fg: '#000000'
+      },
       navigation: {
         bg: "#00642D",
         fg: "#ffffff"

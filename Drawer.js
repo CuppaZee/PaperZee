@@ -39,6 +39,7 @@ export default function CustomDrawerContent(props) {
     {title:"Scanner",icon:"qrcode",page:"Scanner",hide:Platform.OS==="web"}
   ].filter(i=>!i.hide)
   var more = [
+    {title:"La Quête",icon:"run",page:"LaQuest",disabled:true},
     {title:"Settings",icon:"settings",page:"Settings"},
     {title:"Credits",icon:"heart",page:"Credits",disabled:true},
     {title:"App Info",icon:"information",page:"App Info",disabled:true},
@@ -46,9 +47,9 @@ export default function CustomDrawerContent(props) {
   ].filter(i=>!i.hide)
   return (
     <DrawerContentScrollView style={{backgroundColor: theme.navigation.bg}} {...props}>
-      <View style={{paddingTop: 8, paddingLeft: 18}}>
+      {/* <View style={{paddingTop: 8, paddingLeft: 18}}>
         <Text style={{fontSize:16,fontWeight:"bold",color:theme.navigation.fg}}>The menu design is likely to change. Feel free to send feedback.</Text>
-      </View>
+      </View> */}
       {pages.map?.(i=><DrawerItem
         key={i.title}
         activeBackgroundColor={theme.navigation.fg}
@@ -89,6 +90,23 @@ export default function CustomDrawerContent(props) {
       <View style={{paddingTop: 8, paddingBottom: 4, paddingLeft: 18}}>
         <Text style={{fontSize:16,fontWeight:"bold",color:"#fffa"}}>Clans</Text>
       </View>
+      {dash?.map?.(i=><DrawerItem
+        key={`clan_${i.clan_id}`}
+        activeBackgroundColor={theme.navigation.fg}
+        activeTintColor={theme.navigation.bg}
+        inactiveTintColor={theme.navigation.fg}
+        style={{marginVertical:0}}
+        focused={route.name=="Clan"&&route.params?.clanid==Number(i.clan_id)}
+        icon={({ focused, color, size }) => <Image style={{height: 32, width: 32, marginRight: -28, borderRadius: 16}} source={{uri:`https://munzee.global.ssl.fastly.net/images/clan_logos/${(i.clan_id||0).toString(36)}.png`}} />}
+        label={(allclans.find(x=>x[0]==i.clan_id)||[0,i.clan_id||"?"])[1].toString()}
+        onPress={() => nav.reset({
+            index: 1,
+            routes: [
+              { name: '__primary', params: {screen: "Clan", params: {clanid: Number(i.clan_id)}} },
+            ],
+          })
+        }
+      />)}
       <DrawerItem
         activeBackgroundColor={theme.navigation.fg}
         activeTintColor={theme.navigation.bg}
@@ -96,7 +114,10 @@ export default function CustomDrawerContent(props) {
         style={{marginVertical:0}}
         focused={route.name=="AllClans"}
         icon={({ focused, color, size }) => <MaterialCommunityIcons name="shield-half-full" color={color} size={24} style={{marginRight: -24, marginLeft: 4, marginVertical: 4}} />}
-        label="All Clans"
+        label={({ focused, color }) => <View style={{justifyContent:"center"}}>
+          <Text style={{ color, fontWeight: "500", lineHeight: 14 }}>All Clans</Text>
+          <Text style={{ color, fontWeight: "400", lineHeight: 10, fontSize: 10 }}>Experimental</Text>
+        </View>}
         onPress={() => nav.reset({
             index: 1,
             routes: [
@@ -105,17 +126,6 @@ export default function CustomDrawerContent(props) {
           })
         }
       />
-      {dash?.map?.(i=><DrawerItem
-        key={`clan_${i.clan_id}`}
-        activeBackgroundColor={theme.navigation.fg}
-        activeTintColor={theme.navigation.bg}
-        inactiveTintColor={theme.navigation.fg}
-        style={{marginVertical:0, opacity: 0.6}}
-        // focused={i.clan_id==1349}
-        icon={({ focused, color, size }) => <Image style={{height: 32, width: 32, marginRight: -28, borderRadius: 16}} source={{uri:`https://munzee.global.ssl.fastly.net/images/clan_logos/${(i.clan_id||0).toString(36)}.png`}} />}
-        label={(allclans.find(x=>x[0]==i.clan_id)||[0,i.clan_id||"?"])[1].toString()}
-        onPress={() => {}}
-      />)}
       <View style={{paddingTop: 8, paddingBottom: 4, paddingLeft: 18}}>
         <Text style={{fontSize:16,fontWeight:"bold",color:"#fffa"}}>More</Text>
       </View>
@@ -136,6 +146,9 @@ export default function CustomDrawerContent(props) {
           })
         }
       />)}
+      <View style={{paddingTop: 8, paddingLeft: 18, paddingBottom: 8}}>
+        <Text style={{fontSize:12,fontWeight:"bold",opacity: 0.7,color:theme.navigation.fg}}>CuppaZee App Build 3</Text>
+      </View>
       {/* <DrawerItemList activeBackgroundColor="#016930" activeTintColor="#ffffff" itemStyle={{marginVertical:0}} {...props} /> */}
     </DrawerContentScrollView>
   );
