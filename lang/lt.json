@@ -13,7 +13,18 @@
         "credits": "",
         "app_info": "",
         "donate": "",
-        "build_info": ""
+        "build_info": "",
+        "user": {
+            "one": "",
+            "few": "",
+            "other": ""
+        },
+        "clan": {
+            "one": "",
+            "few": "",
+            "other": ""
+        },
+        "more": ""
     },
     "activity": {
         "user_captured": "{user} sugavo",
