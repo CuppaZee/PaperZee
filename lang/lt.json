@@ -5,8 +5,15 @@
         "map": "Žemėlapis",
         "tools": "Įrankiai",
         "settings": "Nustatymai",
-        "authenticate": "",
-        "auth_success": ""
+        "authenticate": "Užsiloginkite",
+        "auth_success": "Įsiloginta sėkmingai",
+        "scanner": "",
+        "the_quest": "",
+        "maps": "",
+        "credits": "",
+        "app_info": "",
+        "donate": "",
+        "build_info": ""
     },
     "activity": {
         "user_captured": "{user} sugavo",
@@ -16,30 +23,31 @@
         "by_user": "{user}",
         "by_you": "jūsų",
         "total_point": {
-            "one": "",
+            "one": "{count} taškas",
             "few": "",
-            "other": ""
+            "other": "{count} taškų"
         },
         "capture": {
-            "one": "",
+            "one": "{count} sugauta",
             "few": "",
-            "other": ""
+            "other": "{count} sugauta"
         },
         "deploy": {
-            "one": "",
+            "one": "{count} deployintas",
             "few": "",
-            "other": ""
+            "other": "{count} deployinta"
         },
         "capon": {
-            "one": "",
+            "one": "{count} caponas",
             "few": "",
-            "other": ""
+            "other": "{count} caponų"
         },
         "point": {
-            "one": "",
+            "one": "{count} taškas",
             "few": "",
-            "other": ""
+            "other": "{count} taškų"
         },
-        "none": ""
+        "none": "Nėra",
+        "user_today": "{user} Šiandien"
     }
 }
