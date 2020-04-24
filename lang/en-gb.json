@@ -13,7 +13,7 @@
         "credits": "Credits",
         "app_info": "App Info",
         "donate": "Donate",
-        "build_info": "CuppaZee App Build {n}"
+        "build_info": "CuppaZee App Build {count}"
     },
     "activity": {
         "user_captured": "{user} captured",
